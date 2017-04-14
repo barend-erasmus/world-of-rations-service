@@ -21,7 +21,7 @@ export class FormulatorRouter {
     private router = express.Router();
 
     constructor() {
-        this.router.get('/formulate', this.formulate);
+        this.router.post('/formulate', this.formulate);
         this.router.get('/findFormulation', this.findFormulation);
         this.router.get('/listFormulations', this.listFormulations);
     }
