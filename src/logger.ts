@@ -5,10 +5,10 @@ import * as winston from 'winston';
 // Imports configuration
 import { config } from './config';
 
-let transports = [];
+let transportsArr = [];
 
 if (config.logging.enabled) {
-  transports = [
+  transportsArr = [
     new (winston.transports.Console)({ level: 'debug' }),
     new (winston.transports.File)({
       filename: path.join(config.logging.path, 'world-of-rations-api.log'),
@@ -18,15 +18,15 @@ if (config.logging.enabled) {
 }
 
 const logger = new (winston.Logger)({
-  transports,
+  transports: transportsArr,
 });
 
 export function getLogger(name: string) {
 
-  let transports = [];
+  let transportsNameArr = [];
 
   if (config.logging.enabled) {
-    transports = [
+    transportsNameArr = [
       new (winston.transports.Console)({ level: 'debug' }),
       new (winston.transports.File)({
         filename: path.join(config.logging.path, `world-of-rations-api-${name}.log`),
@@ -36,7 +36,7 @@ export function getLogger(name: string) {
   }
 
   return new (winston.Logger)({
-    transports,
+    transports: transportsNameArr,
   });
 }
 
