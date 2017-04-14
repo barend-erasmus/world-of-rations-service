@@ -1,8 +1,10 @@
 // Imports
 import * as co from 'co';
 import * as util from 'util';
-import { IElementRepository } from './../element';
 import { Base } from './base';
+
+// Imports interfaces
+import { IElementRepository } from './../element';
 
 // Imports data models
 import { Element as DataElement } from './../../data-models/element';

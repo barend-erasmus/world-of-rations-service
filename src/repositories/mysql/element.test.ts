@@ -1,6 +1,9 @@
+// Imports
 import { expect } from 'chai';
 import * as co from 'co';
 import 'mocha';
+
+// Imports configuration
 import { config } from './../../config';
 
 // Imports repositories

@@ -1,8 +1,10 @@
 // Imports
 import * as co from 'co';
 import * as util from 'util';
-import { IFeedstuffRepository } from './../feedstuff';
 import { Base } from './base';
+
+// Imports interfaces
+import { IFeedstuffRepository } from './../feedstuff';
 
 // Imports domain models
 import { CompositionElement as DomainCompositionElement } from './../../models/composition-element';

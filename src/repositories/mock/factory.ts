@@ -1,9 +1,11 @@
+// Imports repositories
 import { MockElementRepository } from './element';
 import { MockFeedstuffRepository } from './feedstuff';
 import { MockFormulaRepository } from './formula';
 import { MockFormulationRepository } from './formulation';
 import { MockUserRepository } from './user';
 
+// Imports interfaces
 import { IRepositoryFactory } from './../factory';
 
 export class RepositoryFactory implements IRepositoryFactory {

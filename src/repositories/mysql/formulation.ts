@@ -1,7 +1,9 @@
 // Imports
 import * as util from 'util';
-import { IFormulationRepository } from './../formulation';
 import { Base } from './base';
+
+// Imports interfaces
+import { IFormulationRepository } from './../formulation';
 
 // Imports domain models
 import { Feedstuff as DomainFeedstuff } from './../../models/feedstuff';

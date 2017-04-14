@@ -6,6 +6,7 @@ import * as request from 'supertest';
 import * as uuid from 'uuid';
 import express = require("express");
 
+// Imports factories
 import { RepositoryFactory } from './../repositories/mock/factory';
 
 // Imports app

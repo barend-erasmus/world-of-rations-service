@@ -1,6 +1,10 @@
 // Imports
 import express = require("express");
+
+// Imports interfaces
 import { IRepositoryFactory } from './repositories/factory';
+
+// Imports factories
 import { RepositoryFactory } from './repositories/mysql/factory';
 
 // Imports middleware

@@ -1,6 +1,8 @@
 // Imports
 import * as co from 'co';
 import * as uuid from 'uuid';
+
+// Imports interfaces
 import { IElementRepository } from './../repositories/element';
 import { IFeedstuffRepository } from './../repositories/feedstuff';
 

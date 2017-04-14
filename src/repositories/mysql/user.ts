@@ -1,8 +1,10 @@
 // Imports
 import * as co from 'co';
 import * as util from 'util';
-import { IUserRepository } from './../user';
 import { Base } from './base';
+
+// Imports interfaces
+import { IUserRepository } from './../user';
 
 // Imports data models
 import { User as DataUser } from './../../data-models/user';

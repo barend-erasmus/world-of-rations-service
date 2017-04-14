@@ -1,5 +1,7 @@
 // Imports
 import * as util from 'util';
+
+// Imports interfaces
 import { IUserRepository } from './../user';
 
 // Imports data models

@@ -1,7 +1,7 @@
 // Imports
 import * as co from 'co';
 
-// Imports repositories
+// Imports interfaces
 import { IUserRepository } from './../repositories/user';
 
 // Imports domain models

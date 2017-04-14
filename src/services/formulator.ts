@@ -2,6 +2,8 @@
 import * as co from 'co';
 import * as solver from 'javascript-lp-solver';
 import * as uuid from 'uuid';
+
+// Imports interfaces
 import { IFeedstuffRepository } from './../repositories/feedstuff';
 import { IFormulaRepository } from './../repositories/formula';
 import { IFormulationRepository } from './../repositories/formulation';

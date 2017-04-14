@@ -1,9 +1,11 @@
+// Imports repositories
 import { ElementRepository } from './element';
 import { FeedstuffRepository } from './feedstuff';
 import { FormulaRepository } from './formula';
 import { FormulationRepository } from './formulation';
 import { UserRepository } from './user';
 
+// Imports interfaces
 import { IRepositoryFactory } from './../factory';
 
 export class RepositoryFactory implements IRepositoryFactory {

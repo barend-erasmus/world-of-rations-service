@@ -1,9 +1,14 @@
 // Imports
 import { Express, Request, Response } from "express";
 import * as express from 'express';
+
+// Imports app
 import { WorldOfRationsApi } from './../app';
+
+// Imports configuration
 import { config } from './../config';
 
+// Imports interfaces
 import { IRepositoryFactory } from './../repositories/factory';
 
 // Imports services

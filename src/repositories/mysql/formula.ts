@@ -1,8 +1,10 @@
 // Imports
 import * as co from 'co';
 import * as util from 'util';
-import { IFormulaRepository } from './../formula';
 import { Base } from './base';
+
+// Imports interfaces
+import { IFormulaRepository } from './../formula';
 
 // Imports data models
 import { Formula as DataFormula } from './../../data-models/formula';

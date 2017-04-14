@@ -1,9 +1,12 @@
 // Imports
 import { Express, Request, Response } from "express";
 import * as express from 'express';
-import { config } from './../config';
 import mysqldump = require('mysqldump');
 
+// Imports configuration
+import { config } from './../config';
+
+// Imports interfaces
 import { IRepositoryFactory } from './../repositories/factory';
 
 export class DatabaseRouter {

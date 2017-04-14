@@ -1,4 +1,4 @@
-// Imports
+// Imports interfaces
 import { IFormulaRepository } from './../repositories/formula';
 
 // Imports repositories

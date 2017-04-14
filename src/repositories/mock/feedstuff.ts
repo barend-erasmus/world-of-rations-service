@@ -1,4 +1,4 @@
-// Imports
+// Imports interfaces
 import { IFeedstuffRepository } from './../feedstuff';
 
 // Imports domain models

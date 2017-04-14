@@ -1,4 +1,4 @@
-// Imports
+// Imports interfaces
 import { IElementRepository } from './../element';
 
 // Imports domain models
