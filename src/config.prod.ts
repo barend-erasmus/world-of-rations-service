@@ -1,7 +1,7 @@
 export let config = {
-    baseUri: 'https://worldofrations.com',
+    baseUri: 'https://yourdomain.com',
     web: {
-        uri: 'https://worldofrations.com',
+        uri: 'https://yourdomain.com',
     },
     db: {
         server: 'mysql',
