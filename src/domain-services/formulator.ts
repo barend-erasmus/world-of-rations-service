@@ -39,7 +39,6 @@ export class FormulatorService {
             const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, feedstuffsResult, username);
 
             return formulation;
-
         });
     }
 
@@ -74,7 +73,6 @@ export class FormulatorService {
                 feasible: formulation.feasible,
                 id: formulation.id,
             };
-
         });
     }
 
