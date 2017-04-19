@@ -1,12 +1,13 @@
 // Imports models
 import { Feedstuff } from './../domain-models/feedstuff';
+import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { SuggestedValue } from './../domain-models/suggested-value';
 
 export interface IFeedstuffRepository {
 
     list(): Promise<Feedstuff[]>;
 
-    examples(): Promise<Feedstuff[]>;
+    examples(): Promise<FormulationFeedstuff[]>;
 
     create(feedstuff: Feedstuff): Promise<boolean>;
 

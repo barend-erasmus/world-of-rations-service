@@ -4,24 +4,24 @@ import * as uuid from 'uuid';
 
 // Imports interfaces
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
-import { IElementRepository } from './../repositories/element';
 
 // Imports domain models
 import { Element } from './../domain-models/element';
 import { Feedstuff } from './../domain-models/feedstuff';
+import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { FeedstuffElement } from './../domain-models/feedstuff-element';
 import { SuggestedValue } from './../domain-models/suggested-value';
 
 export class FeedstuffService {
 
-    constructor(private feedstuffRepository: IFeedstuffRepository, private elementRepository: IElementRepository) {
+    constructor(private feedstuffRepository: IFeedstuffRepository) {
     }
 
-    public listFeedstuffs(username: string): Promise<Feedstuff[]> {
+    public listFeedstuffs(): Promise<Feedstuff[]> {
         return this.feedstuffRepository.list();
     }
 
-    public listExampleFeedstuffs(): Promise<Feedstuff[]> {
+    public listExampleFeedstuffs(): Promise<FormulationFeedstuff[]> {
         return this.feedstuffRepository.examples();
     }
 
@@ -42,6 +42,22 @@ export class FeedstuffService {
             const feedstuff: Feedstuff = new Feedstuff(id, name, null, null, username);
 
             const success: boolean = yield self.feedstuffRepository.create(feedstuff);
+
+            return feedstuff;
+        });
+    }
+
+    public updateUserFeedstuff(id: string, name: string, description: string, elements: FeedstuffElement[]): Promise<Feedstuff> {
+        const self = this;
+
+        return co(function*() {
+
+            const feedstuff: Feedstuff = yield self.feedstuffRepository.findById(id);
+
+            feedstuff.name = name;
+            feedstuff.elements = elements;
+        
+            const success: boolean = yield self.feedstuffRepository.update(feedstuff);
 
             return feedstuff;
         });
