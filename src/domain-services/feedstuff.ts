@@ -3,8 +3,8 @@ import * as co from 'co';
 import * as uuid from 'uuid';
 
 // Imports interfaces
-import { IElementRepository } from './../repositories/element';
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
+import { IElementRepository } from './../repositories/element';
 
 // Imports domain models
 import { Element } from './../domain-models/element';
@@ -39,7 +39,7 @@ export class FeedstuffService {
         return co(function*() {
             const id = uuid.v4();
 
-            const feedstuff: Feedstuff = new Feedstuff(id, name, null, null, username)
+            const feedstuff: Feedstuff = new Feedstuff(id, name, null, null, username);
 
             const success: boolean = yield self.feedstuffRepository.create(feedstuff);
 

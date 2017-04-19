@@ -1,13 +1,13 @@
 // Imports models
-import { FormulaGroup } from './formula-group'
-import { FormulaElement } from './formula-element'
+import { FormulaElement } from './formula-element';
+import { FormulaGroup } from './formula-group';
 
 export class Formula {
      constructor(
         public id: string,
         public name: string,
         public group: FormulaGroup,
-        public elements: FormulaElement[]
+        public elements: FormulaElement[],
     ) {
 
     }

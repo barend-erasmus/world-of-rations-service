@@ -1,6 +1,6 @@
 // Imports models
-import { FormulationFeedstuff } from './formulation-feedstuff';
 import { Formula } from './formula';
+import { FormulationFeedstuff } from './formulation-feedstuff';
 
 export class Formulation {
     constructor(
@@ -10,7 +10,7 @@ export class Formulation {
         public currencyCode: string,
         public formula: Formula,
         public feedstuffs: FormulationFeedstuff[],
-        public username: string
+        public username: string,
     ) {
 
     }

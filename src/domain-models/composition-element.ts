@@ -8,7 +8,7 @@ export class CompositionElement extends Element {
         unit: string,
         sortOrder: number,
         public value: number,
-        public status: string
+        public status: string,
     ) {
         super(id, name, unit, sortOrder);
     }

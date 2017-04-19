@@ -10,11 +10,10 @@ import { IFormulationRepository } from './../domain-repositories/formulation';
 
 // Imports domain models
 import { CompositionElement } from './../domain-models/composition-element';
-import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { Formula } from './../domain-models/formula';
 import { FormulaElement } from './../domain-models/formula-element';
 import { Formulation } from './../domain-models/formulation';
-
+import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 
 // Imports services
 import { FeedstuffService } from './../services/feedstuff';
@@ -31,7 +30,7 @@ export class FormulatorService {
 
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
 
             const formula: Formula = yield self.formulaRepository.findById(formulaId);
             const feedstuffsResult = yield feedstuffs.map((x) => self.feedstuffRepository.findById(x.id));
@@ -63,7 +62,7 @@ export class FormulatorService {
 
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
 
             const success: boolean = yield self.formulationRepository.create(formulation);
 
@@ -80,7 +79,7 @@ export class FormulatorService {
 
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const formulation: Formulation = yield self.formulationRepository.findById(formulationId);
 
             if (formulation.username !== username) {

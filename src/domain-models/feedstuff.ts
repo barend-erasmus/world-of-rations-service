@@ -8,7 +8,7 @@ export class Feedstuff {
         public name: string,
         public group: FeedstuffGroup,
         public elements: FeedstuffElement[],
-        public username: string
+        public username: string,
     ) {
 
     }
