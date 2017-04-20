@@ -102,7 +102,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         return co(function*() {
             const result: any[] = yield self.query(`CALL listUserFeedstuffs('${username}');`);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null? null : new FeedstuffGroup(x.groupId, x.groupName), null, username)));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, username)));
             return feedstuffs;
         });
     }

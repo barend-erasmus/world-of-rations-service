@@ -22,7 +22,7 @@ export class FormulaRepository extends Base implements IFormulaRepository {
         return co(function*(){
             const result: any[] = yield self.query(`CALL listFormulas();`);
 
-            const formulas: Formula[] = yield result.map((x) => self.loadElements(new Formula(x.id, x.name, x.groupId === null?  null:  new FormulaGroup(x.groupId, x.groupName), null, x.comparisonFormulaId)));
+            const formulas: Formula[] = yield result.map((x) => self.loadElements(new Formula(x.id, x.name, x.groupId === null ?  null :  new FormulaGroup(x.groupId, x.groupName), null, x.comparisonFormulaId)));
             return formulas;
         });
     }
@@ -62,7 +62,7 @@ export class FormulaRepository extends Base implements IFormulaRepository {
                 return null;
             }
 
-            const group: FormulaGroup = result[0].groupId === null? null : new FormulaGroup(result[0].groupId, result[0].groupName);
+            const group: FormulaGroup = result[0].groupId === null ? null : new FormulaGroup(result[0].groupId, result[0].groupName);
 
             let formula: Formula = new Formula(result[0].id, result[0].name, group, null, result[0].comparisonFormulaId);
 

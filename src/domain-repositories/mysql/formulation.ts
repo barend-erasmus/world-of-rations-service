@@ -25,8 +25,8 @@ export class FormulationRepository extends Base implements IFormulationRepositor
 
             const insertFormulationResult: any = yield self.query(`CALL insertFormulation('${formulation.id}', '${formulation.formula.id}', ${formulation.feasible}, ${formulation.cost}, '${formulation.currencyCode}', ${formulation.timestamp});`);
 
-            const insertFormulationFeedstuffResults: any[] = yield formulation.feedstuffs.map((x)=> self.query(`CALL insertFormulationFeedstuff('${formulation.id}', '${x.id}', ${x.minimum}, ${x.maximum}, ${x.cost}, ${x.weight});`));
- 
+            const insertFormulationFeedstuffResults: any[] = yield formulation.feedstuffs.map((x) => self.query(`CALL insertFormulationFeedstuff('${formulation.id}', '${x.id}', ${x.minimum}, ${x.maximum}, ${x.cost}, ${x.weight});`));
+
             return true;
         });
    }
@@ -34,29 +34,29 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public findById(id: string): Promise<Formulation> {
          const self = this;
 
-         return co(function* () {
+         return co(function*() {
           const findFormulationByIdResults: any[] = yield self.query(`CALL findFormulationById('${id}');`);
 
-           if (findFormulationByIdResults.length === 0) {
+          if (findFormulationByIdResults.length === 0) {
                 return null;
             }
 
-           const formulation: Formulation = new Formulation(findFormulationByIdResults[0].id, findFormulationByIdResults[0].feasible, findFormulationByIdResults[0].cost, findFormulationByIdResults[0].currencyCode, null, null, null, findFormulationByIdResults[0].username, findFormulationByIdResults[0].timestamp);
+          const formulation: Formulation = new Formulation(findFormulationByIdResults[0].id, findFormulationByIdResults[0].feasible, findFormulationByIdResults[0].cost, findFormulationByIdResults[0].currencyCode, null, null, null, findFormulationByIdResults[0].username, findFormulationByIdResults[0].timestamp);
 
-           formulation.formula = yield self.formulaRepository.findById(findFormulationByIdResults[0].formulaId);
-           formulation.comparisonFormula = yield self.formulaRepository.findById(formulation.formula.comparisonFormulaId);
+          formulation.formula = yield self.formulaRepository.findById(findFormulationByIdResults[0].formulaId);
+          formulation.comparisonFormula = yield self.formulaRepository.findById(formulation.formula.comparisonFormulaId);
 
-           const listFormulationFeedstuffsByIdResults: any[] = yield self.query(`CALL listFormulationFeedstuffsById('${id}');`);
+          const listFormulationFeedstuffsByIdResults: any[] = yield self.query(`CALL listFormulationFeedstuffsById('${id}');`);
 
-           const feedstuffs: Feedstuff[] = yield listFormulationFeedstuffsByIdResults.map((x) => self.feedstuffRepository.findById(x.id));
+          const feedstuffs: Feedstuff[] = yield listFormulationFeedstuffsByIdResults.map((x) => self.feedstuffRepository.findById(x.id));
 
-           formulation.feedstuffs = feedstuffs.map((x, i) => {
+          formulation.feedstuffs = feedstuffs.map((x, i) => {
                 const f: any = listFormulationFeedstuffsByIdResults[i];
 
-                 return new FormulationFeedstuff(x.id, x.name, x.group, x.elements, x.username, f.cost, f.minimum, f.maximum, f.weight);
+                return new FormulationFeedstuff(x.id, x.name, x.group, x.elements, x.username, f.cost, f.minimum, f.maximum, f.weight);
             });
 
-           return formulation;
+          return formulation;
         });
     }
 
