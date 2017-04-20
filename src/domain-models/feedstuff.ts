@@ -12,4 +12,29 @@ export class Feedstuff {
     ) {
 
     }
+
+    public isUserFeedstuff() {
+        return this.username != null;
+    }
+
+    public isValid() {
+        if (this.id === null || this.name == null || this.elements === null) {
+            return false;
+        }
+
+
+        if (this.isUserFeedstuff()) {
+            if (this.username === null) {
+                return false;
+            }
+
+            if (this.group !== null) {
+                return false;
+            }
+        } else {
+            if (this.group === null) {
+                return false;
+            }
+        }
+    }
 }

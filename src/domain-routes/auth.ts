@@ -6,7 +6,7 @@ import { config } from './../config';
 import * as co from 'co';
 
 // Imports app
-import { WorldOfRationsApi } from './../domain-app';
+import { WorldOfRationsApi } from './../app';
 
 // Imports interfaces
 import { IRepositoryFactory } from './../domain-repositories/repository-factory';

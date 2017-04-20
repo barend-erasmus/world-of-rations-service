@@ -2,10 +2,10 @@
 import express = require("express");
 
 // Imports interfaces
-import { IRepositoryFactory } from './repositories/factory';
+import { IRepositoryFactory } from './domain-repositories/repository-factory';
 
 // Imports factories
-import { RepositoryFactory } from './repositories/mysql/factory';
+import { RepositoryFactory } from './domain-repositories/mysql/repository-factory';
 
 // Imports middleware
 import bodyParser = require('body-parser');
@@ -14,11 +14,11 @@ import jwt = require('express-jwt');
 import expressWinston = require('express-winston');
 
 // Imports routes
-import { AuthRouter } from './routes/auth';
-import { DatabaseRouter } from './routes/database';
-import { FeedstuffRouter } from './routes/feedstuff';
-import { FormulaRouter } from './routes/formula';
-import { FormulatorRouter } from './routes/formulator';
+import { AuthRouter } from './domain-routes/auth';
+import { DatabaseRouter } from './domain-routes/database';
+import { FeedstuffRouter } from './domain-routes/feedstuff';
+import { FormulaRouter } from './domain-routes/formula';
+import { FormulatorRouter } from './domain-routes/formulator';
 
 // Imports logger
 import { logger } from './logger';

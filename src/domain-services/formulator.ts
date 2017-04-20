@@ -11,16 +11,13 @@ import { IFormulationRepository } from './../domain-repositories/formulation';
 // Imports domain models
 import { CompositionElement } from './../domain-models/composition-element';
 import { Formula } from './../domain-models/formula';
+import { Feedstuff } from './../domain-models/feedstuff';
 import { FormulaElement } from './../domain-models/formula-element';
 import { Formulation } from './../domain-models/formulation';
 import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 
-// Imports services
-import { FeedstuffService } from './../services/feedstuff';
-
 export class FormulatorService {
 
-    private feedstuffService: FeedstuffService;
 
     constructor(private formulaRepository: IFormulaRepository, private feedstuffRepository: IFeedstuffRepository, private formulationRepository: IFormulationRepository) {
 
@@ -33,9 +30,18 @@ export class FormulatorService {
         return co(function*() {
 
             const formula: Formula = yield self.formulaRepository.findById(formulaId);
-            const feedstuffsResult = yield feedstuffs.map((x) => self.feedstuffRepository.findById(x.id));
+            const comparisonFormula: Formula = yield self.formulaRepository.findById(formula.comparisonFormulaId);
+            const feedstuffsResult: Feedstuff[] = yield feedstuffs.map((x) => self.feedstuffRepository.findById(x.id));
 
-            const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, feedstuffsResult, username);
+            const formulationFeedstuffs: FormulationFeedstuff[] = [];
+
+            for (const feedstuff of feedstuffsResult) {
+                const f: FormulationFeedstuff = feedstuffs.find(x => x.id === feedstuff.id);
+
+                formulationFeedstuffs.push(new FormulationFeedstuff(feedstuff.id, feedstuff.name, feedstuff.group, feedstuff.elements, feedstuff.username, f.cost, f.minimum, f.maximum, f.weight))
+            }
+
+            const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, comparisonFormula, formulationFeedstuffs, username, 0);
 
             return formulation;
         });
@@ -81,10 +87,6 @@ export class FormulatorService {
 
         return co(function*() {
             const formulation: Formulation = yield self.formulationRepository.findById(formulationId);
-
-            if (formulation.username !== username) {
-                return null;
-            }
 
             return formulation;
         });

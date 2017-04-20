@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as co from 'co';
 
 // Imports app
-import { WorldOfRationsApi } from './../domain-app';
+import { WorldOfRationsApi } from './../app';
 
 // Imports configuration
 import { config } from './../config';

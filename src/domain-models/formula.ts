@@ -8,6 +8,7 @@ export class Formula {
         public name: string,
         public group: FormulaGroup,
         public elements: FormulaElement[],
+        public comparisonFormulaId: string,
     ) {
 
     }

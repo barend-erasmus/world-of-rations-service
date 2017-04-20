@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as co from 'co';
 
 // Imports app
-import { WorldOfRationsApi } from './../domain-app';
+import { WorldOfRationsApi } from './../app';
 
 // Imports configuration
 import { config } from './../config';
@@ -41,7 +41,7 @@ export class FormulaRouter {
             res.json(formulas.map((x) => {
                 return {
                     id: x.id,
-                    name: x.name,
+                    name: x.group.name + ' - ' + x.name,
                 };
             }));
         }).catch((err: Error) => {

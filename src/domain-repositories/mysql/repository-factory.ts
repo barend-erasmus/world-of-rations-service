@@ -18,14 +18,14 @@ export class RepositoryFactory implements IRepositoryFactory {
     }
 
     getInstanceOfFeedstuffRepository(config: any): IFeedstuffRepository {
-        return new FeedstuffRepository();
+        return new FeedstuffRepository(config);
     }
 
     getInstanceOfFormulaRepository(config: any): IFormulaRepository {
-        return new FormulaRepository();
+        return new FormulaRepository(config);
     }
 
     getInstanceOfFormulationRepository(config: any): IFormulationRepository {
-        return new FormulationRepository();
+        return new FormulationRepository(config, this.getInstanceOfFormulaRepository(config), this.getInstanceOfFeedstuffRepository(config));
     }
 }
