@@ -90,7 +90,7 @@ export class FormulatorRouter {
                     return {
                         id: x.id,
                         name: x.name,
-                        selectedSupplementFeedstuffs: x.selectedSupplementFeedstuff == null? [] : [x.selectedSupplementFeedstuff],
+                        selectedSupplementFeedstuffs: x.selectedSupplementFeedstuff === null ? [] : [x.selectedSupplementFeedstuff],
                         sortOrder: x.sortOrder,
                         supplementFeedstuffs: x.supplementFeedstuffs,
                         unit: x.unit,

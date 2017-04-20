@@ -8,10 +8,10 @@ import { IFormulaRepository } from './../formula';
 import { IFormulationRepository } from './../formulation';
 
 // Imports models
+import { CompositionElement } from './../../domain-models/composition-element';
 import { Feedstuff } from './../../domain-models/feedstuff';
 import { Formulation } from './../../domain-models/formulation';
 import { FormulationFeedstuff } from './../../domain-models/formulation-feedstuff';
-import { CompositionElement } from './../../domain-models/composition-element';
 
 export class FormulationRepository extends Base implements IFormulationRepository {
 
@@ -22,7 +22,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public create(formulation: Formulation): Promise<boolean> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
 
             const insertFormulationResult: any = yield self.query(`CALL insertFormulation('${formulation.id}', '${formulation.formula.id}', ${formulation.feasible}, ${formulation.cost}, '${formulation.currencyCode}', ${formulation.timestamp});`);
 
@@ -35,7 +35,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public findById(id: string): Promise<Formulation> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const findFormulationByIdResults: any[] = yield self.query(`CALL findFormulationById('${id}');`);
 
             if (findFormulationByIdResults.length === 0) {
