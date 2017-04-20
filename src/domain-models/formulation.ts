@@ -2,6 +2,7 @@
 import { CompositionElement } from './composition-element';
 import { Formula } from './formula';
 import { FormulationFeedstuff } from './formulation-feedstuff';
+import { SupplementElement } from './supplement-element';
 
 export class Formulation {
     constructor(
@@ -12,6 +13,7 @@ export class Formulation {
         public formula: Formula,
         public comparisonFormula: Formula,
         public feedstuffs: FormulationFeedstuff[],
+        public supplementElements: SupplementElement[],
         public username: string,
         public timestamp: number,
     ) {
@@ -39,10 +41,15 @@ export class Formulation {
             elementMaximum = element.maximum === null ? 1000000 : element.maximum;
 
             const status = sum < elementMinimum ? 'Inadequate' : sum > elementMaximum ? 'Excessive' : 'Adequate';
+            const sortageValue = (element.minimum * 1000) - (sum * 1000);
 
-            composition.push(new CompositionElement(element.id, element.name, element.unit, element.sortOrder, sum, status));
+            composition.push(new CompositionElement(element.id, element.name, element.unit, element.sortOrder, sum, status, sortageValue));
         }
 
         return composition;
+    }
+
+    public GetCompositionElementForSupplementElements() {
+        return this.GetComposition().filter((x) => x.hasSortage());
     }
 }

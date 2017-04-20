@@ -9,7 +9,12 @@ export class CompositionElement extends Element {
         sortOrder: number,
         public value: number,
         public status: string,
+        public sortageValue: number
     ) {
         super(id, name, unit, sortOrder);
+    }
+
+    public hasSortage() {
+        return this.status === 'Inadequate';
     }
 }

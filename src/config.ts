@@ -10,7 +10,7 @@ export let config = {
         database: 'worldofrations',
     },
     logging: {
-        enabled: false,
+        enabled: true,
         path: './',
     },
     oauth: {

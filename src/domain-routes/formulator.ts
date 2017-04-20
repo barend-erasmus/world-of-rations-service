@@ -86,16 +86,16 @@ export class FormulatorRouter {
                     name: formulation.formula.name,
                 },
                 id: formulation.id,
-                // supplementComposition: findFormulationResult.supplementComposition.map((x) => {
-                //     return {
-                //         id: x.id,
-                //         name: x.name,
-                //         selectedSupplementFeedstuffs: x.selectedSupplementFeedstuffs,
-                //         sortOrder: x.sortOrder,
-                //         supplementFeedstuffs: x.supplementFeedstuffs,
-                //         unit: x.unit,
-                //     };
-                // }),
+                supplementComposition: formulation.supplementElements.map((x) => {
+                    return {
+                        id: x.id,
+                        name: x.name,
+                        selectedSupplementFeedstuffs: x.selectedSupplementFeedstuff == null? [] : [x.selectedSupplementFeedstuff],
+                        sortOrder: x.sortOrder,
+                        supplementFeedstuffs: x.supplementFeedstuffs,
+                        unit: x.unit,
+                    };
+                }),
             });
 
         }).catch((err: Error) => {

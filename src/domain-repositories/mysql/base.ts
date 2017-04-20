@@ -27,7 +27,7 @@ export class Base {
     }
 
     protected query(query: string): Promise<any> {
-        getLogger('mysql').debug(query);
+        // getLogger('mysql').debug(query);
 
         return new Promise((resolve: (x: any) => void, reject: (err: Error) => void) => {
             pool.getConnection((err1: Error, connection: any) => {
@@ -39,6 +39,7 @@ export class Base {
                         if (err2) {
                             reject(err2);
                         } else {
+                            getLogger('mysql').debug(`${query} => ${results[0].length}`);
                             resolve(results[0]);
                         }
                     });

@@ -40,7 +40,7 @@ export class FormulatorService {
                 formulationFeedstuffs.push(new FormulationFeedstuff(feedstuff.id, feedstuff.name, feedstuff.group, feedstuff.elements, feedstuff.username, f.cost, f.minimum, f.maximum, f.weight));
             }
 
-            const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, comparisonFormula, formulationFeedstuffs, username, 0);
+            const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, comparisonFormula, formulationFeedstuffs, null, username, 0);
 
             return formulation;
         });
