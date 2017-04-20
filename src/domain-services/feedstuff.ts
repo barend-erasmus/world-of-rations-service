@@ -8,8 +8,8 @@ import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
 // Imports domain models
 import { Element } from './../domain-models/element';
 import { Feedstuff } from './../domain-models/feedstuff';
-import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { FeedstuffElement } from './../domain-models/feedstuff-element';
+import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { SuggestedValue } from './../domain-models/suggested-value';
 
 export class FeedstuffService {
@@ -56,7 +56,7 @@ export class FeedstuffService {
 
             feedstuff.name = name;
             feedstuff.elements = elements;
-        
+
             const success: boolean = yield self.feedstuffRepository.update(feedstuff);
 
             return feedstuff;

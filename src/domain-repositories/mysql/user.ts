@@ -2,7 +2,7 @@
 import { User } from './../../domain-models/user';
 
 export class UserRepository {
-    
+
     public findByUsername(username: string): Promise<User> {
         return null;
     }

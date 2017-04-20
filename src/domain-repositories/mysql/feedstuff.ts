@@ -1,15 +1,15 @@
 // Imports
-import { Base } from './base';
 import * as co from 'co';
+import { Base } from './base';
 
 // Imports repositories
 import { IFeedstuffRepository } from './../feedstuff';
 
 // Imports models
 import { Feedstuff } from './../../domain-models/feedstuff';
-import { FormulationFeedstuff } from './../../domain-models/formulation-feedstuff';
 import { FeedstuffElement } from './../../domain-models/feedstuff-element';
 import { FeedstuffGroup } from './../../domain-models/feedstuff-group';
+import { FormulationFeedstuff } from './../../domain-models/formulation-feedstuff';
 import { SuggestedValue } from './../../domain-models/suggested-value';
 
 export class FeedstuffRepository extends Base implements IFeedstuffRepository {
@@ -21,10 +21,10 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
     public list(): Promise<Feedstuff[]> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const result: any[] = yield self.query(`CALL listFeedstuffs();`);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null? null : new FeedstuffGroup(x.groupId, x.groupName), null, null)));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ?  null : new FeedstuffGroup(x.groupId, x.groupName), null, null)));
             return feedstuffs;
         });
     }
@@ -32,10 +32,10 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
     public examples(): Promise<FormulationFeedstuff[]> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const result: any[] = yield self.query(`CALL listExampleFeedstuffs();`);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new FormulationFeedstuff(x.id, x.name, x.groupId === null? null : new FeedstuffGroup(x.groupId, x.groupName), null, null, x.cost, x.minimum, x.maximum, null)));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new FormulationFeedstuff(x.id, x.name, x.groupId === null ?  null : new FeedstuffGroup(x.groupId, x.groupName), null, null, x.cost, x.minimum, x.maximum, null)));
             return feedstuffs;
         });
     }
@@ -43,7 +43,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
     public create(feedstuff: Feedstuff): Promise<boolean> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             if (feedstuff.isUserFeedstuff()) {
                 const insertUserFeedstuffResult: any = yield self.query(`CALL insertUserFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
 
@@ -51,7 +51,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
             } else {
                 const insertFeedstuffResult: any = yield self.query(`CALL insertFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
 
-                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map(x => self.query(`CALL insertFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL insertFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
             }
 
             return true;
@@ -61,15 +61,15 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
     public update(feedstuff: Feedstuff): Promise<boolean> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             if (feedstuff.isUserFeedstuff()) {
                 const insertUserFeedstuffResult: any = yield self.query(`CALL updateUserFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
 
-                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map(x => self.query(`CALL updateUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL updateUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
             } else {
                 const insertFeedstuffResult: any = yield self.query(`CALL updateFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
 
-                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map(x => self.query(`CALL updateFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL updateFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
             }
 
             return true;
@@ -79,14 +79,14 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
     public findById(id: string): Promise<Feedstuff> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const result: any[] = yield self.query(`CALL findFeedstuffById('${id}');`);
 
             if (result.length === 0) {
                 return null;
             }
 
-            const group: FeedstuffGroup = result[0].groupId === null? null : new FeedstuffGroup(result[0].groupId, result[0].groupName)
+            const group: FeedstuffGroup = result[0].groupId === null ? null : new FeedstuffGroup(result[0].groupId, result[0].groupName);
 
             let feedstuff: Feedstuff = new Feedstuff(result[0].id, result[0].name, group, null, result[0].username);
 
@@ -99,7 +99,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
     public listByUsername(username): Promise<Feedstuff[]> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const result: any[] = yield self.query(`CALL listUserFeedstuffs('${username}');`);
 
             const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null? null : new FeedstuffGroup(x.groupId, x.groupName), null, username)));
@@ -110,7 +110,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
     public findSuggestedValuesByFormulaIdAndFeedstuffId(formulaId: string, feedstuffId: string): Promise<SuggestedValue> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             return null;
             // const findSuggestedValuesByFormulaIdAndFeedstuffIdResult: any[] = yield self.query(`'CALL findSuggestedValuesByFormulaIdAndFeedstuffId('${formulaId}','${feedstuffId}');`)
 
@@ -120,16 +120,15 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
             //     return new SuggestedValue(findSuggestedValuesByFormulaIdAndFeedstuffIdResult[0].minimum, findSuggestedValuesByFormulaIdAndFeedstuffIdResult[0].maximum);
             // }
         });
-    }
-
+  }
 
     private loadElements(feedstuff: Feedstuff) {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const result: any[] = yield self.query(`CALL listFeedstuffElementsById('${feedstuff.id}');`);
 
-            feedstuff.elements = result.map(x => new FeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value));
+            feedstuff.elements = result.map((x) => new FeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value));
 
             return feedstuff;
         });

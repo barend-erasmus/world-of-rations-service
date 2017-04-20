@@ -1,7 +1,7 @@
 // Imports models
+import { CompositionElement } from './composition-element';
 import { Formula } from './formula';
 import { FormulationFeedstuff } from './formulation-feedstuff';
-import { CompositionElement } from './composition-element';
 
 export class Formulation {
     constructor(

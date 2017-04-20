@@ -19,7 +19,7 @@ export class DatabaseRouter {
     }
 
     private export(req: Request, res: Response, next: () => void) {
-        
+
         mysqldump({
             database: config.db.database,
             dest: './data.sql',

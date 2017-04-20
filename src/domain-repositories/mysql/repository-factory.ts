@@ -1,18 +1,18 @@
 // Imports interfaces
-import { IRepositoryFactory } from './../repository-factory';
-import { IUserRepository } from './../user';
 import { IFeedstuffRepository } from './../feedstuff';
 import { IFormulaRepository } from './../formula';
 import { IFormulationRepository } from './../formulation';
+import { IRepositoryFactory } from './../repository-factory';
+import { IUserRepository } from './../user';
 
 // Imports repositories
-import { UserRepository } from './user';
 import { FeedstuffRepository } from './feedstuff';
 import { FormulaRepository } from './formula';
 import { FormulationRepository } from './formulation';
+import { UserRepository } from './user';
 
 export class RepositoryFactory implements IRepositoryFactory {
-    
+
     getInstanceOfUserRepository(config: any): IUserRepository {
         return new UserRepository();
     }

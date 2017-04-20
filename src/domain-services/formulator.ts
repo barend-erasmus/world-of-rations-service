@@ -10,14 +10,13 @@ import { IFormulationRepository } from './../domain-repositories/formulation';
 
 // Imports domain models
 import { CompositionElement } from './../domain-models/composition-element';
-import { Formula } from './../domain-models/formula';
 import { Feedstuff } from './../domain-models/feedstuff';
+import { Formula } from './../domain-models/formula';
 import { FormulaElement } from './../domain-models/formula-element';
 import { Formulation } from './../domain-models/formulation';
 import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 
 export class FormulatorService {
-
 
     constructor(private formulaRepository: IFormulaRepository, private feedstuffRepository: IFeedstuffRepository, private formulationRepository: IFormulationRepository) {
 
@@ -36,9 +35,9 @@ export class FormulatorService {
             const formulationFeedstuffs: FormulationFeedstuff[] = [];
 
             for (const feedstuff of feedstuffsResult) {
-                const f: FormulationFeedstuff = feedstuffs.find(x => x.id === feedstuff.id);
+                const f: FormulationFeedstuff = feedstuffs.find((x) => x.id === feedstuff.id);
 
-                formulationFeedstuffs.push(new FormulationFeedstuff(feedstuff.id, feedstuff.name, feedstuff.group, feedstuff.elements, feedstuff.username, f.cost, f.minimum, f.maximum, f.weight))
+                formulationFeedstuffs.push(new FormulationFeedstuff(feedstuff.id, feedstuff.name, feedstuff.group, feedstuff.elements, feedstuff.username, f.cost, f.minimum, f.maximum, f.weight));
             }
 
             const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, comparisonFormula, formulationFeedstuffs, username, 0);

@@ -1,7 +1,7 @@
 // Imports
+import * as co from 'co';
 import { Express, Request, Response } from "express";
 import * as express from 'express';
-import * as co from 'co';
 
 // Imports app
 import { WorldOfRationsApi } from './../app';
@@ -38,7 +38,7 @@ export class FormulatorRouter {
         const formulationRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulationRepository(config.db);
         const formulatorService = new FormulatorService(formulaRepository, feedstuffRepository, formulationRepository);
 
-        co(function* () {
+        co(function*() {
             const formulation: Formulation = yield formulatorService.createFormulation(req.body.feedstuffs, req.body.formulaId, req.body.currencyCode, req.user == null ? null : req.user.username);
 
             const formulationResult = yield formulatorService.formulate(formulation, req.user == null ? null : req.user.username);
@@ -57,7 +57,7 @@ export class FormulatorRouter {
         const formulationRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulationRepository(config.db);
         const formulatorService = new FormulatorService(formulaRepository, feedstuffRepository, formulationRepository);
 
-        co(function* () {
+        co(function*() {
             const formulation: Formulation = yield formulatorService.findFormulation(req.query.formulationId, req.user == null ? null : req.user.username);
 
             res.json({
@@ -109,7 +109,7 @@ export class FormulatorRouter {
         const formulationRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulationRepository(config.db);
         const formulatorService = new FormulatorService(formulaRepository, feedstuffRepository, formulationRepository);
 
-        co(function* () {
+        co(function*() {
             const formulations: Formulation[] = yield formulatorService.listFormulations();
 
             res.json(formulations.map((x) => {

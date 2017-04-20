@@ -1,7 +1,7 @@
 // Imports
+import * as co from 'co';
 import { Express, Request, Response } from "express";
 import * as express from 'express';
-import * as co from 'co';
 
 // Imports app
 import { WorldOfRationsApi } from './../app';
@@ -31,14 +31,14 @@ export class FormulaRouter {
     }
 
     private listFormula(req: Request, res: Response, next: () => void) {
-        
+
         const formulaRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulaRepository(config.db);
         const formulaService = new FormulaService(formulaRepository);
 
-        co(function* () {
-            const formulas: Formula[] = yield formulaService.listFormula();
+        co(function*() {
+           const formulas: Formula[] = yield formulaService.listFormula();
 
-            res.json(formulas.map((x) => {
+           res.json(formulas.map((x) => {
                 return {
                     id: x.id,
                     name: x.group.name + ' - ' + x.name,

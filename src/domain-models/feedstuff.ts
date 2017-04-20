@@ -22,7 +22,6 @@ export class Feedstuff {
             return false;
         }
 
-
         if (this.isUserFeedstuff()) {
             if (this.username === null) {
                 return false;
