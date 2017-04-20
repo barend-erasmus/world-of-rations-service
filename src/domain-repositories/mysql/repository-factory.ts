@@ -13,19 +13,19 @@ import { UserRepository } from './user';
 
 export class RepositoryFactory implements IRepositoryFactory {
 
-    getInstanceOfUserRepository(config: any): IUserRepository {
+    public getInstanceOfUserRepository(config: any): IUserRepository {
         return new UserRepository();
     }
 
-    getInstanceOfFeedstuffRepository(config: any): IFeedstuffRepository {
+    public getInstanceOfFeedstuffRepository(config: any): IFeedstuffRepository {
         return new FeedstuffRepository(config);
     }
 
-    getInstanceOfFormulaRepository(config: any): IFormulaRepository {
+    public getInstanceOfFormulaRepository(config: any): IFormulaRepository {
         return new FormulaRepository(config);
     }
 
-    getInstanceOfFormulationRepository(config: any): IFormulationRepository {
+    public getInstanceOfFormulationRepository(config: any): IFormulationRepository {
         return new FormulationRepository(config, this.getInstanceOfFormulaRepository(config), this.getInstanceOfFeedstuffRepository(config));
     }
 }

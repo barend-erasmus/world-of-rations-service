@@ -96,10 +96,10 @@ export class FeedstuffRouter {
             const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
 
             res.json({
+                elements: feedstuff.elements,
                 id: feedstuff.id,
                 name: feedstuff.name,
-                elements: feedstuff.elements
- ,           });
+            });
         }).catch((err: Error) => {
             res.json(err.message);
         });
@@ -159,9 +159,9 @@ export class FeedstuffRouter {
         const feedstuffService = new FeedstuffService(feedstuffRepository);
 
         co(function*() {
-           const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
+            const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
 
-           res.json(feedstuffs.map((x) => {
+            res.json(feedstuffs.map((x) => {
                 return {
                     cost: x.cost,
                     id: x.id,
@@ -187,9 +187,9 @@ export class FeedstuffRouter {
         const feedstuffService = new FeedstuffService(feedstuffRepository);
 
         co(function*() {
-           const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.feedstuffId, req.body.name, req.body.description, req.body.elements);
+            const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.feedstuffId, req.body.name, req.body.description, req.body.elements);
 
-           res.json(feedstuff);
+            res.json(feedstuff);
 
         }).catch((err: Error) => {
             res.json(err.message);
