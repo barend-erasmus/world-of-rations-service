@@ -47,7 +47,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
             if (feedstuff.isUserFeedstuff()) {
                 const insertUserFeedstuffResult: any = yield self.query(`CALL insertUserFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
 
-                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map(x => self.query(`CALL insertUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL insertUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
             } else {
                 const insertFeedstuffResult: any = yield self.query(`CALL insertFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
 

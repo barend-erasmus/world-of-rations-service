@@ -21,12 +21,12 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public create(formulation: Formulation): Promise<boolean> {
         const self = this;
 
-         return co(function* () {
+        return co(function*() {
 
             const insertFormulationResult: any = yield self.query(`CALL insertFormulation('${formulation.id}', '${formulation.formula.id}', ${formulation.feasible}, ${formulation.cost}, '${formulation.currencyCode}', ${formulation.timestamp});`);
 
-            const insertFormulationFeedstuffResults: any[] = yield formulation.feedstuffs.map(x => self.query(`CALL insertFormulationFeedstuff('${formulation.id}', '${x.id}', ${x.minimum}, ${x.maximum}, ${x.cost}, ${x.weight});`))
-            
+            const insertFormulationFeedstuffResults: any[] = yield formulation.feedstuffs.map((x)=> self.query(`CALL insertFormulationFeedstuff('${formulation.id}', '${x.id}', ${x.minimum}, ${x.maximum}, ${x.cost}, ${x.weight});`));
+ 
             return true;
         });
    }
@@ -34,8 +34,8 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public findById(id: string): Promise<Formulation> {
          const self = this;
 
-        return co(function* () {
-           const findFormulationByIdResults: any[] = yield self.query(`CALL findFormulationById('${id}');`);
+         return co(function* () {
+          const findFormulationByIdResults: any[] = yield self.query(`CALL findFormulationById('${id}');`);
 
            if (findFormulationByIdResults.length === 0) {
                 return null;
@@ -51,9 +51,9 @@ export class FormulationRepository extends Base implements IFormulationRepositor
            const feedstuffs: Feedstuff[] = yield listFormulationFeedstuffsByIdResults.map((x) => self.feedstuffRepository.findById(x.id));
 
            formulation.feedstuffs = feedstuffs.map((x, i) => {
-                 var f: any = listFormulationFeedstuffsByIdResults[i];
+                const f: any = listFormulationFeedstuffsByIdResults[i];
 
-                return new FormulationFeedstuff(x.id, x.name, x.group, x.elements, x.username, f.cost, f.minimum, f.maximum, f.weight);
+                 return new FormulationFeedstuff(x.id, x.name, x.group, x.elements, x.username, f.cost, f.minimum, f.maximum, f.weight);
             });
 
            return formulation;

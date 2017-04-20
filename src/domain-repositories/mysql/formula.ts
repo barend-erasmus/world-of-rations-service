@@ -22,7 +22,7 @@ export class FormulaRepository extends Base implements IFormulaRepository {
         return co(function*(){
             const result: any[] = yield self.query(`CALL listFormulas();`);
 
-             const formulas: Formula[] = yield result.map((x) => self.loadElements(new Formula(x.id, x.name, x.groupId === null? null: new FormulaGroup(x.groupId, x.groupName), null, x.comparisonFormulaId)));
+            const formulas: Formula[] = yield result.map((x) => self.loadElements(new Formula(x.id, x.name, x.groupId === null?  null:  new FormulaGroup(x.groupId, x.groupName), null, x.comparisonFormulaId)));
             return formulas;
         });
     }
@@ -30,7 +30,7 @@ export class FormulaRepository extends Base implements IFormulaRepository {
     public create(formula: Formula): Promise<boolean> {
         const self = this;
 
-       return co(function* () {
+        return co(function*() {
 
             const insertFormulaResult: any = yield self.query(`CALL insertFormula('${formula.id}', '${formula.name}', '${formula.group.id}');`);
 
@@ -43,7 +43,7 @@ export class FormulaRepository extends Base implements IFormulaRepository {
     public update(formula: Formula): Promise<boolean> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const insertFormulaResult: any = yield self.query(`CALL updateFeedstuff('${formula.id}', '${formula.name}', '${formula.group.id}');`);
 
             const insertFormulaElementResults: any[] = yield formula.elements.map((x) => self.query(`CALL updateFeedstuffElement('${formula.id}', '${x.id}', ${x.minimum}, ${x.maximum})`));
@@ -55,7 +55,7 @@ export class FormulaRepository extends Base implements IFormulaRepository {
     public findById(id: string): Promise<Formula> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const result: any[] = yield self.query(`CALL findFormulaById('${id}');`);
 
             if (result.length === 0) {

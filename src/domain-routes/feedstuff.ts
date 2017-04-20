@@ -186,7 +186,7 @@ export class FeedstuffRouter {
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository);
 
-         co(function* () {
+        co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.feedstuffId, req.body.name, req.body.description, req.body.elements);
 
            res.json(feedstuff);
