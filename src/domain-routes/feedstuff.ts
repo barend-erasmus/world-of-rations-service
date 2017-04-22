@@ -45,11 +45,11 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function* () {
+        co(function*() {
             let feedstuffs: Feedstuff[] = yield feedstuffService.listFeedstuffs();
 
             if (req.user !== null) {
-                
+
                 const userFeedstuffs = yield feedstuffService.listUserFeedstuffs(req.user.username);
 
                 feedstuffs = feedstuffs.concat(userFeedstuffs);
@@ -77,10 +77,10 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function* () {
-            const feedstuffs: Feedstuff[] = yield feedstuffService.listUserFeedstuffs(req.user == null ? null : req.user.username);
+        co(function*() {
+           const feedstuffs: Feedstuff[] = yield feedstuffService.listUserFeedstuffs(req.user == null ? null : req.user.username);
 
-            res.json(feedstuffs.map((x) => {
+           res.json(feedstuffs.map((x) => {
                 return {
                     id: x.id,
                     name: x.name,
@@ -102,10 +102,10 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function* () {
-            const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
+        co(function*() {
+           const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
 
-            res.json({
+           res.json({
                 elements: feedstuff.elements,
                 id: feedstuff.id,
                 name: feedstuff.name,
@@ -127,10 +127,10 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function* () {
-            const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
+        co(function*() {
+           const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
 
-            res.json({
+           res.json({
                 id: feedstuff.id,
                 name: feedstuff.name,
             });
@@ -146,10 +146,10 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function* () {
-            const suggestedValue: SuggestedValue = yield feedstuffService.findSuggestedValues(req.query.formulaId, req.query.feedstuffId);
+        co(function*() {
+           const suggestedValue: SuggestedValue = yield feedstuffService.findSuggestedValues(req.query.formulaId, req.query.feedstuffId);
 
-            if (suggestedValue == null) {
+           if (suggestedValue == null) {
                 res.json({
                     maximum: 1000,
                     minimum: 0,
@@ -171,10 +171,10 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function* () {
-            const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
+        co(function*() {
+           const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
 
-            res.json(feedstuffs.map((x) => {
+           res.json(feedstuffs.map((x) => {
                 return {
                     cost: x.cost,
                     id: x.id,
@@ -200,10 +200,10 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function* () {
-            const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.feedstuffId, req.body.name, req.body.description, req.body.elements);
+        co(function*() {
+           const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.feedstuffId, req.body.name, req.body.description, req.body.elements);
 
-            res.json(feedstuff);
+           res.json(feedstuff);
 
         }).catch((err: Error) => {
             res.json(err.message);
