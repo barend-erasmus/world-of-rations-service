@@ -61,7 +61,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
         return co(function*() {
             const result: any[] = yield self.query(`CALL listFormulations();`);
 
-            let formulations: Formulation[] = yield result.map((x) => new Formulation(x.id, x.feasible, x.cost, x.currencyCode, null, null, null, null, x.username, x.timestamp));
+            let formulations: Formulation[] = yield result.map((x) => new Formulation(x.id, x.feasible, x.cost, x.currencyCode, new Formula(x.formulaId, null, null, null, null), null, null, null, x.username, x.timestamp));
 
             formulations = yield formulations.map((x) => self.loadFormulaAndComparisonFormula(x));
 
