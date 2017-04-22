@@ -32,14 +32,20 @@ export class Base {
         return new Promise((resolve: (x: any) => void, reject: (err: Error) => void) => {
             pool.getConnection((err1: Error, connection: any) => {
                 if (err1) {
+                    getLogger('mysql').debug(`${query} failed`);
                     reject(err1);
                 } else {
                     connection.query(query, (err2: Error, results: any[], fields) => {
                         connection.release();
                         if (err2) {
+                            getLogger('mysql').debug(`${query} failed`);
                             reject(err2);
                         } else {
-                            getLogger('mysql').debug(`${query} => ${results[0].length}`);
+                            if (results[0] === undefined) {
+                                getLogger('mysql').debug(`${query}`);
+                            } else {
+                                getLogger('mysql').debug(`${query} => ${results[0].length}`);
+                            }
                             resolve(results[0]);
                         }
                     });

@@ -15,6 +15,9 @@ import { IRepositoryFactory } from './../domain-repositories/repository-factory'
 import { AuthService } from './../domain-services/auth';
 import { UserService } from './../domain-services/user';
 
+// Imports logger
+import { logger } from './../logger';
+
 export class AuthRouter {
 
     private router = express.Router();
@@ -59,8 +62,8 @@ export class AuthRouter {
         const auth = authService.createClientAuths();
 
         co(function*() {
-           const user: any = auth.googleAuth.code.getToken(req.originalUrl);
-
+           const user: any = yield auth.googleAuth.code.getToken(req.originalUrl);
+           
            request('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + user.accessToken, (error: Error, response: any, body: any) => {
                 if (!error && response.statusCode === 200) {
                     userService.login(JSON.parse(body).email).then((loginResult: any) => {

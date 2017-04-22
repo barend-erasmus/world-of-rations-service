@@ -4,6 +4,7 @@ import * as uuid from 'uuid';
 
 // Imports interfaces
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
+import { IElementRepository } from './../domain-repositories/element';
 
 // Imports domain models
 import { Element } from './../domain-models/element';
@@ -12,9 +13,10 @@ import { FeedstuffElement } from './../domain-models/feedstuff-element';
 import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { SuggestedValue } from './../domain-models/suggested-value';
 
+
 export class FeedstuffService {
 
-    constructor(private feedstuffRepository: IFeedstuffRepository) {
+    constructor(private feedstuffRepository: IFeedstuffRepository, private elementRepository: IElementRepository) {
     }
 
     public listFeedstuffs(): Promise<Feedstuff[]> {
@@ -36,10 +38,13 @@ export class FeedstuffService {
     public createUserFeedstuff(username: string, name: string, description: string): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
             const id = uuid.v4();
 
             const feedstuff: Feedstuff = new Feedstuff(id, name, null, null, username);
+
+            const elements: Element[] = yield self.elementRepository.list();
+            feedstuff.elements = elements.map((x) => new FeedstuffElement(x.id, x.name, x.unit, x.sortOrder, 0)); 
 
             const success: boolean = yield self.feedstuffRepository.create(feedstuff);
 
@@ -50,7 +55,7 @@ export class FeedstuffService {
     public updateUserFeedstuff(id: string, name: string, description: string, elements: FeedstuffElement[]): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
 
             const feedstuff: Feedstuff = yield self.feedstuffRepository.findById(id);
 
@@ -66,7 +71,7 @@ export class FeedstuffService {
     public findUserFeedstuff(feedstuffId: string, username: string): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
 
             const feedstuff: Feedstuff = yield self.feedstuffRepository.findById(feedstuffId);
 

@@ -13,7 +13,7 @@ export class UserRepository extends Base implements IUserRepository {
     public findByUsername(username: string): Promise<User> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
             const result: any[] = yield self.query(`CALL findUserByUsername('${username}');`);
 
             if (result.length === 0) {
@@ -21,16 +21,28 @@ export class UserRepository extends Base implements IUserRepository {
             }
 
             let user: User = new User(result[0].username, result[0].lastLoginTimestamp);
-            
+
             return user;
         });
     }
 
     public update(user: User): Promise<boolean> {
-        return null;
+        const self = this;
+
+        return co(function* () {
+            const result: any[] = yield self.query(`CALL updateUser('${user.username}', ${user.lastLoginTimestamp})`);
+
+            return true;
+        });
     }
 
-    public create(create: User): Promise<boolean> {
-        return null;
+    public create(user: User): Promise<boolean> {
+        const self = this;
+
+        return co(function* () {
+            const result: any[] = yield self.query(`CALL insertUser('${user.username}', ${user.lastLoginTimestamp})`);
+
+            return true;
+        });
     }
 }
