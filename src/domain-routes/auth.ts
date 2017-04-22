@@ -63,7 +63,7 @@ export class AuthRouter {
 
         co(function*() {
            const user: any = yield auth.googleAuth.code.getToken(req.originalUrl);
-           
+
            request('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + user.accessToken, (error: Error, response: any, body: any) => {
                 if (!error && response.statusCode === 200) {
                     userService.login(JSON.parse(body).email).then((loginResult: any) => {

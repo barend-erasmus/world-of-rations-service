@@ -1,17 +1,17 @@
 // Imports interfaces
+import { IElementRepository } from './../element';
 import { IFeedstuffRepository } from './../feedstuff';
 import { IFormulaRepository } from './../formula';
 import { IFormulationRepository } from './../formulation';
 import { IRepositoryFactory } from './../repository-factory';
 import { IUserRepository } from './../user';
-import { IElementRepository } from './../element';
 
 // Imports repositories
+import { ElementRepository } from './element';
 import { FeedstuffRepository } from './feedstuff';
 import { FormulaRepository } from './formula';
 import { FormulationRepository } from './formulation';
 import { UserRepository } from './user';
-import { ElementRepository } from './element';
 
 export class RepositoryFactory implements IRepositoryFactory {
 

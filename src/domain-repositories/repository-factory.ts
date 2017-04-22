@@ -1,9 +1,9 @@
 // Imports interfaces
+import { IElementRepository } from './element';
 import { IFeedstuffRepository } from './feedstuff';
 import { IFormulaRepository } from './formula';
 import { IFormulationRepository } from './formulation';
 import { IUserRepository } from './user';
-import { IElementRepository } from './element';
 
 export interface IRepositoryFactory {
 

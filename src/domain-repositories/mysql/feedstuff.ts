@@ -84,7 +84,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
 
         return co(function*() {
             const result: any[] = yield self.query(`CALL findFeedstuffById('${id}');`);
-            
+
             if (result.length === 0) {
                 return null;
             }

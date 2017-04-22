@@ -23,7 +23,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public create(formulation: Formulation): Promise<boolean> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
 
             const insertFormulationResult: any = yield self.query(`CALL insertFormulation('${formulation.id}', '${formulation.formula.id}', ${formulation.feasible}, ${formulation.cost}, '${formulation.currencyCode}', ${formulation.timestamp});`);
 
@@ -36,7 +36,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public findById(id: string): Promise<Formulation> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const findFormulationByIdResults: any[] = yield self.query(`CALL findFormulationById('${id}');`);
 
             if (findFormulationByIdResults.length === 0) {
@@ -58,17 +58,17 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     public list(): Promise<Formulation[]> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const result: any[] = yield self.query(`CALL listFormulations();`);
 
             let formulations: Formulation[] = yield result.map((x) => new Formulation(x.id, x.feasible, x.cost, x.currencyCode, null, null, null, null, x.username, x.timestamp));
-            
+
             formulations = yield formulations.map((x) => self.loadFormulaAndComparisonFormula(x));
 
             formulations = yield formulations.map((x) => self.loadFeedstuffs(x));
 
             formulations = yield formulations.map((x) => self.loadSupplementElements(x));
-            
+
             return formulations;
         });
     }
@@ -76,8 +76,8 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     private loadSupplementElements(formulation: Formulation): Promise<Formulation> {
         const self = this;
 
-        return co(function* () {
-            const supplementElements = yield formulation.GetCompositionElementForSupplementElements().map((x) => self.feedstuffRepository.findSupplementFeedstuff(x));
+        return co(function*() {
+            const supplementElements: any[] = yield formulation.GetCompositionElementForSupplementElements().map((x) => self.feedstuffRepository.findSupplementFeedstuff(x));
 
             formulation.supplementElements = supplementElements;
 
@@ -88,7 +88,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     private loadFormulaAndComparisonFormula(formulation: Formulation): Promise<Formulation> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             formulation.formula = yield self.formulaRepository.findById(formulation.formula.id);
             formulation.comparisonFormula = yield self.formulaRepository.findById(formulation.formula.comparisonFormulaId);
 
@@ -99,7 +99,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
     private loadFeedstuffs(formulation: Formulation): Promise<Formulation> {
         const self = this;
 
-        return co(function* () {
+        return co(function*() {
             const listFormulationFeedstuffsByIdResults: any[] = yield self.query(`CALL listFormulationFeedstuffsById('${formulation.id}');`);
 
             const feedstuffs: Feedstuff[] = yield listFormulationFeedstuffsByIdResults.map((x) => self.feedstuffRepository.findById(x.id));
@@ -111,6 +111,6 @@ export class FormulationRepository extends Base implements IFormulationRepositor
             });
 
             return formulation;
-        })
+        });
     }
 }
