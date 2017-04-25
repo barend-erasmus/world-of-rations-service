@@ -1,4 +1,4 @@
-// Imports domain models
+// Imports models
 import { SupplementFeedstuff } from './supplement-feedstuff';
 
 export class SupplementElement {

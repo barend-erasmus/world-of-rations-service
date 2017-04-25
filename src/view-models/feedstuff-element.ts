@@ -1,7 +1,7 @@
-// Imports data models
-import { Element as DataElement } from './element';
+// Imports models
+import { Element } from './element';
 
-export class FeedstuffMeasurement extends DataElement {
+export class FeedstuffElement extends Element {
     constructor(
         id: string,
         name: string,

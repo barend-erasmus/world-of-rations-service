@@ -8,8 +8,9 @@ import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
 import { IFormulaRepository } from './../domain-repositories/formula';
 import { IFormulationRepository } from './../domain-repositories/formulation';
 
-// Imports domain models
+// Imports models
 import { CompositionElement } from './../domain-models/composition-element';
+import { FormulationResult } from './../domain-models/formulation-result';
 import { Feedstuff } from './../domain-models/feedstuff';
 import { Formula } from './../domain-models/formula';
 import { FormulaElement } from './../domain-models/formula-element';
@@ -46,7 +47,7 @@ export class FormulatorService {
         });
     }
 
-    public formulate(formulation: Formulation, username: string): Promise<any> {
+    public formulate(formulation: Formulation, username: string): Promise<FormulationResult> {
 
         let results: any;
         const model = {
@@ -71,12 +72,7 @@ export class FormulatorService {
 
             const success: boolean = yield self.formulationRepository.create(formulation);
 
-            return {
-                cost: formulation.cost,
-                currencyCode: formulation.currencyCode,
-                feasible: formulation.feasible,
-                id: formulation.id,
-            };
+            return new FormulationResult(formulation.id, formulation.feasible, formulation.currencyCode, formulation.cost);
         });
     }
 

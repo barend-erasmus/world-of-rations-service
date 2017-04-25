@@ -11,8 +11,9 @@ import { config } from './../config';
 
 import { IRepositoryFactory } from './../domain-repositories/repository-factory';
 
-// Imports domain models
+// Imports models
 import { Formulation } from './../domain-models/formulation';
+import { FormulationResult } from './../domain-models/formulation-result';
 
 // Imports services
 import { FormulatorService } from './../domain-services/formulator';
@@ -41,7 +42,7 @@ export class FormulatorRouter {
         co(function*() {
             const formulation: Formulation = yield formulatorService.createFormulation(req.body.feedstuffs, req.body.formulaId, req.body.currencyCode, req.user == null ? null : req.user.username);
 
-            const formulationResult = yield formulatorService.formulate(formulation, req.user == null ? null : req.user.username);
+            const formulationResult: FormulationResult = yield formulatorService.formulate(formulation, req.user == null ? null : req.user.username);
 
             res.json(formulationResult);
 

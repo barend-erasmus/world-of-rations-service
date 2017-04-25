@@ -1,7 +1,7 @@
 // Imports interfaces
 import { IFormulaRepository } from './../domain-repositories/formula';
 
-// Imports domain models
+// Imports models
 import { Formula } from './../domain-models/formula';
 
 export class FormulaService {

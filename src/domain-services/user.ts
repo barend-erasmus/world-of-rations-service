@@ -4,7 +4,7 @@ import * as co from 'co';
 // Imports interfaces
 import { IUserRepository } from './../domain-repositories/user';
 
-// Imports domain models
+// Imports models
 import { User } from './../domain-models/user';
 
 export class UserService {

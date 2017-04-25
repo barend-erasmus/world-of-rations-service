@@ -6,7 +6,7 @@ import * as uuid from 'uuid';
 import { IElementRepository } from './../domain-repositories/element';
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
 
-// Imports domain models
+// Imports models
 import { Element } from './../domain-models/element';
 import { Feedstuff } from './../domain-models/feedstuff';
 import { FeedstuffElement } from './../domain-models/feedstuff-element';
