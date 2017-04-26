@@ -22,11 +22,11 @@ import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { SuggestedValue } from './../domain-models/suggested-value';
 
 // Imports view models
-import { Feedstuff as ViewModelFeedstuff } from './../view-models/feedstuff'; 
-import { UserFeedstuff as ViewModelUserFeedstuff } from './../view-models/user-feedstuff'; 
-import { FeedstuffElement as ViewModelFeedstuffElement } from './../view-models/feedstuff-element'; 
-import { SuggestedValue as ViewModelSuggestedValue } from './../view-models/suggested-value'; 
-import { ExampleFeedstuff as ViewModelExampleFeedstuff } from './../view-models/example-feedstuff'; 
+import { ExampleFeedstuff as ViewModelExampleFeedstuff } from './../view-models/example-feedstuff';
+import { Feedstuff as ViewModelFeedstuff } from './../view-models/feedstuff';
+import { FeedstuffElement as ViewModelFeedstuffElement } from './../view-models/feedstuff-element';
+import { SuggestedValue as ViewModelSuggestedValue } from './../view-models/suggested-value';
+import { UserFeedstuff as ViewModelUserFeedstuff } from './../view-models/user-feedstuff';
 
 export class FeedstuffRouter {
 
