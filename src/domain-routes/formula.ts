@@ -18,6 +18,9 @@ import { FormulaService } from './../domain-services/formula';
 // Imports models
 import { Formula } from './../domain-models/formula';
 
+// Imports view models
+import { Formula as ViewModelFormula } from './../view-models/formula';
+
 export class FormulaRouter {
 
     private router = express.Router();
@@ -38,12 +41,7 @@ export class FormulaRouter {
         co(function*() {
            const formulas: Formula[] = yield formulaService.listFormula();
 
-           res.json(formulas.map((x) => {
-                return {
-                    id: x.id,
-                    name: x.group.name + ' - ' + x.name,
-                };
-            }));
+           res.json(formulas.map((x) => new ViewModelFormula(x.id, x.fullname())));
         }).catch((err: Error) => {
             res.json(err.message);
         });

@@ -21,6 +21,13 @@ import { FeedstuffElement } from './../domain-models/feedstuff-element';
 import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { SuggestedValue } from './../domain-models/suggested-value';
 
+// Imports view models
+import { Feedstuff as ViewModelFeedstuff } from './../view-models/feedstuff'; 
+import { UserFeedstuff as ViewModelUserFeedstuff } from './../view-models/user-feedstuff'; 
+import { FeedstuffElement as ViewModelFeedstuffElement } from './../view-models/feedstuff-element'; 
+import { SuggestedValue as ViewModelSuggestedValue } from './../view-models/suggested-value'; 
+import { ExampleFeedstuff as ViewModelExampleFeedstuff } from './../view-models/example-feedstuff'; 
+
 export class FeedstuffRouter {
 
     private router = express.Router();
@@ -55,12 +62,8 @@ export class FeedstuffRouter {
                 feedstuffs = feedstuffs.concat(userFeedstuffs);
             }
 
-            res.json(feedstuffs.map((x) => {
-                return {
-                    id: x.id,
-                    name: x.name,
-                };
-            }));
+            res.json(feedstuffs.map((x) => new ViewModelFeedstuff(x.id, x.name)));
+
         }).catch((err: Error) => {
             res.json(err.message);
         });
@@ -80,12 +83,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuffs: Feedstuff[] = yield feedstuffService.listUserFeedstuffs(req.user == null ? null : req.user.username);
 
-           res.json(feedstuffs.map((x) => {
-                return {
-                    id: x.id,
-                    name: x.name,
-                };
-            }));
+           res.json(feedstuffs.map((x) => new ViewModelUserFeedstuff(x.id, x.name, null)));
         }).catch((err: Error) => {
             res.json(err.message);
         });
@@ -105,11 +103,8 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
 
-           res.json({
-                elements: feedstuff.elements,
-                id: feedstuff.id,
-                name: feedstuff.name,
-            });
+           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value))));
+
         }).catch((err: Error) => {
             res.json(err.message);
         });
@@ -130,10 +125,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
 
-           res.json({
-                id: feedstuff.id,
-                name: feedstuff.name,
-            });
+           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, null));
 
         }).catch((err: Error) => {
             res.json(err.message);
@@ -150,15 +142,9 @@ export class FeedstuffRouter {
            const suggestedValue: SuggestedValue = yield feedstuffService.findSuggestedValues(req.query.formulaId, req.query.feedstuffId);
 
            if (suggestedValue == null) {
-                res.json({
-                    maximum: 1000,
-                    minimum: 0,
-                });
+                res.json(new ViewModelSuggestedValue(0, 1000));
             } else {
-                res.json({
-                    maximum: suggestedValue.maximum,
-                    minimum: suggestedValue.minimum,
-                });
+                res.json(new ViewModelSuggestedValue(suggestedValue.minimum, suggestedValue.maximum));
             }
         }).catch((err: Error) => {
             res.json(err.message);
@@ -174,15 +160,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
 
-           res.json(feedstuffs.map((x) => {
-                return {
-                    cost: x.cost,
-                    id: x.id,
-                    maximum: x.maximum,
-                    minimum: x.minimum,
-                    name: x.name,
-                };
-            }));
+           res.json(feedstuffs.map((x) => new ViewModelExampleFeedstuff(x.id, x.name, x.cost, x.minimum, x.maximum)));
 
         }).catch((err: Error) => {
             res.json(err.message);
@@ -203,7 +181,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.feedstuffId, req.body.name, req.body.description, req.body.elements);
 
-           res.json(feedstuff);
+           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value))));
 
         }).catch((err: Error) => {
             res.json(err.message);
