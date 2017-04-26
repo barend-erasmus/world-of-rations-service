@@ -1,7 +1,7 @@
 // Imports models
-import { FormulationFeedstuff } from './formulation-feedstuff';
-import { Formula } from './formula';
 import { CompositionElement } from './composition-element';
+import { Formula } from './formula';
+import { FormulationFeedstuff } from './formulation-feedstuff';
 import { SupplementElement } from './supplement-element';
 
 export class Formulation {
@@ -12,7 +12,7 @@ export class Formulation {
         public cost: number,
         public feedstuffs: FormulationFeedstuff[],
         public formula: Formula,
-        public composition: CompositionElement[], 
+        public composition: CompositionElement[],
         public supplementElements: SupplementElement[]) {
 
     }

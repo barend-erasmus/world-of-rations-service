@@ -10,12 +10,12 @@ import { IFormulationRepository } from './../domain-repositories/formulation';
 
 // Imports models
 import { CompositionElement } from './../domain-models/composition-element';
-import { FormulationResult } from './../domain-models/formulation-result';
 import { Feedstuff } from './../domain-models/feedstuff';
 import { Formula } from './../domain-models/formula';
 import { FormulaElement } from './../domain-models/formula-element';
 import { Formulation } from './../domain-models/formulation';
 import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
+import { FormulationResult } from './../domain-models/formulation-result';
 
 export class FormulatorService {
 
