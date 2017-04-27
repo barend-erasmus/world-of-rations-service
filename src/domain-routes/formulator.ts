@@ -72,7 +72,7 @@ export class FormulatorRouter {
 
             res.json(new ViewModelFormulation(
                 formulation.id, formulation.feasible, formulation.currencyCode, formulation.cost,
-                formulation.feedstuffs.map((x) => new ViewModelFormulationFeedstuff(x.id, x.name, x.cost, x.weight)),
+                formulation.feedstuffs.map((x) => new ViewModelFormulationFeedstuff(x.id, x.name, x.cost, x.weight, x.minimum, x.maximum)),
                 new ViewModelFormula(formulation.formula.id, formulation.formula.fullname()),
                 formulation.GetComposition().map((x) => new ViewModelCompositionElement(x.id, x.name, x.unit, x.status, x.value, x.sortOrder)),
                 formulation.supplementElements.map((x) => new ViewModelSupplementElement(x.id, x.name, x.unit, x.sortOrder,

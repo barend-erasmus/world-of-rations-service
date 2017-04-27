@@ -55,7 +55,7 @@ export class FeedstuffRouter {
         co(function*() {
             let feedstuffs: Feedstuff[] = yield feedstuffService.listFeedstuffs();
 
-            if (req.user !== null) {
+            if (req.user !== undefined) {
 
                 const userFeedstuffs = yield feedstuffService.listUserFeedstuffs(req.user.username);
 
@@ -179,7 +179,7 @@ export class FeedstuffRouter {
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
         co(function*() {
-           const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.feedstuffId, req.body.name, req.body.description, req.body.elements);
+           const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.id, req.body.name, req.body.description, req.body.elements);
 
            res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value))));
 
