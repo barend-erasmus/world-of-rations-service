@@ -11,7 +11,7 @@ export class CompositionElement extends Element {
         public status: string,
         public sortageValue: number,
     ) {
-        super(id, name, unit, sortOrder);
+        super(id, name, unit, null, sortOrder);
     }
 
     public hasSortage() {

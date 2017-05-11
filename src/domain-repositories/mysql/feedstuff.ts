@@ -144,7 +144,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         return co(function*() {
             const result: any[] = yield self.query(`CALL listFeedstuffElementsById('${feedstuff.id}');`);
 
-            feedstuff.elements = result.map((x) => new FeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value));
+            feedstuff.elements = result.map((x) => new FeedstuffElement(x.id, x.name, x.unit, x.code, x.sortOrder, x.value));
 
             return feedstuff;
         });

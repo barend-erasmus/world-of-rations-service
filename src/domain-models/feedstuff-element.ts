@@ -6,9 +6,10 @@ export class FeedstuffElement extends Element {
         id: string,
         name: string,
         unit: string,
+        code: string,
         sortOrder: number,
         public value: number,
     ) {
-        super(id, name, unit, sortOrder);
+        super(id, name, unit, code, sortOrder);
     }
 }

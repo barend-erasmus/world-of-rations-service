@@ -103,7 +103,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
 
-           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value))));
+           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.code, x.sortOrder, x.value))));
 
         }).catch((err: Error) => {
             res.json(err.message);

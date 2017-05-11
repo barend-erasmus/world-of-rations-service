@@ -43,7 +43,7 @@ export class FeedstuffService {
             const feedstuff: Feedstuff = new Feedstuff(id, name, null, null, username);
 
             const elements: Element[] = yield self.elementRepository.list();
-            feedstuff.elements = elements.map((x) => new FeedstuffElement(x.id, x.name, x.unit, x.sortOrder, 0));
+            feedstuff.elements = elements.map((x) => new FeedstuffElement(x.id, x.name, x.unit, x.code, x.sortOrder, 0));
 
             const success: boolean = yield self.feedstuffRepository.create(feedstuff);
 

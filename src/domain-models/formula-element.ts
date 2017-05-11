@@ -10,6 +10,6 @@ export class FormulaElement extends Element {
         public minimum: number,
         public maximum: number,
     ) {
-        super(id, name, unit, sortOrder);
+        super(id, name, unit, null, sortOrder);
     }
 }

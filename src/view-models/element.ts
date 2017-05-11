@@ -3,6 +3,7 @@ export class Element {
         public id: string,
         public name: string,
         public unit: string,
+        public code: string,
         public sortOrder: number,
     ) {
     }
