@@ -181,7 +181,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.id, req.body.name, req.body.description, req.body.elements);
 
-           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.sortOrder, x.value))));
+           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.code, x.sortOrder, x.value))));
 
         }).catch((err: Error) => {
             res.json(err.message);
