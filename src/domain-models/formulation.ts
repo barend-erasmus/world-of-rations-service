@@ -5,6 +5,21 @@ import { FormulationFeedstuff } from './formulation-feedstuff';
 import { SupplementElement } from './supplement-element';
 
 export class Formulation {
+
+    public static mapFormulation(obj: any): Formulation {
+        return new Formulation(
+            obj.id,
+            obj.feasible,
+            obj.cost,
+            obj.currencyCode,
+            Formula.mapFormula(obj.formula),
+            Formula.mapFormula(obj.comparisonFormula),
+            obj.feedstuffs.map((x) => FormulationFeedstuff.mapFormulationFeedstuff(x)),
+            obj.supplementElements.map((x) => SupplementElement.mapSupplementElement(x)),
+            obj.username,
+            obj.timestamp);
+    }
+
     constructor(
         public id: string,
         public feasible: boolean,
@@ -42,7 +57,6 @@ export class Formulation {
 
             const sortageValue = (element.minimum * 1000) - (sum * 1000);
             const status = (Math.round(sum * 100) / 100) < elementMinimum ? 'Inadequate' : (Math.round(sum * 100) / 100) > elementMaximum ? 'Excessive' : 'Adequate';
-            
 
             composition.push(new CompositionElement(element.id, element.name, element.unit, element.sortOrder, sum, status, sortageValue));
         }

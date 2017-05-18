@@ -2,6 +2,9 @@
 import * as co from 'co';
 import * as uuid from 'uuid';
 
+// Imports services
+import { CacheService } from './cache';
+
 // Imports interfaces
 import { IElementRepository } from './../domain-repositories/element';
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
@@ -19,11 +22,52 @@ export class FeedstuffService {
     }
 
     public listFeedstuffs(): Promise<Feedstuff[]> {
-        return this.feedstuffRepository.list();
+        const self = this;
+
+        return co(function*() {
+            const cacheService = CacheService.getInstance();
+
+            const cachedResult: Feedstuff[] = yield cacheService.find({
+                key: "FeedstuffService.listFeedstuffs",
+            });
+
+            if (cachedResult !== null) {
+                return cachedResult.map((x) => Feedstuff.mapFeedstuff(x));
+            }
+
+            const result: Feedstuff[] = yield self.feedstuffRepository.list();
+
+            yield cacheService.add({
+                key: "FeedstuffService.listFeedstuffs",
+            }, result, 24 * 60 * 60);
+
+            return result;
+        });
     }
 
     public listExampleFeedstuffs(): Promise<FormulationFeedstuff[]> {
-        return this.feedstuffRepository.examples();
+
+        const self = this;
+
+        return co(function*() {
+            const cacheService = CacheService.getInstance();
+
+            const cachedResult: FormulationFeedstuff[] = yield cacheService.find({
+                key: "FeedstuffService.listExampleFeedstuffs",
+            });
+
+            if (cachedResult !== null) {
+                return cachedResult.map((x) => FormulationFeedstuff.mapFormulationFeedstuff(x));
+            }
+
+            const result: FormulationFeedstuff[] = yield self.feedstuffRepository.examples();
+
+            yield cacheService.add({
+                key: "FeedstuffService.listExampleFeedstuffs",
+            }, result, 24 * 60 * 60);
+
+            return result;
+        });
     }
 
     public findSuggestedValues(formulaId: string, feedstuffId: string): Promise<SuggestedValue> {

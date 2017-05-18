@@ -20,16 +20,8 @@ export class Base {
         }
     }
 
-    public queryForTest(query: string): Promise<any> {
-        getLogger('mysql').debug(query);
-
-        return this.query(query);
-    }
-
     protected query(query: string): Promise<any> {
-        // getLogger('mysql').debug(query);
-
-        return new Promise((resolve: (x: any) => void, reject: (err: Error) => void) => {
+           return new Promise((resolve: (x: any) => void, reject: (err: Error) => void) => {
             pool.getConnection((err1: Error, connection: any) => {
                 if (err1) {
                     getLogger('mysql').debug(`${query} failed`);

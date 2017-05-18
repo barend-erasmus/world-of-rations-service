@@ -3,6 +3,9 @@ import * as co from 'co';
 import * as solver from 'javascript-lp-solver';
 import * as uuid from 'uuid';
 
+// Imports services
+import { CacheService } from './cache';
+
 // Imports interfaces
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
 import { IFormulaRepository } from './../domain-repositories/formula';
@@ -81,9 +84,24 @@ export class FormulatorService {
         const self = this;
 
         return co(function*() {
-            const formulation: Formulation = yield self.formulationRepository.findById(formulationId);
 
-            return formulation;
+            const cacheService = CacheService.getInstance();
+
+            const cachedResult: Formulation = yield cacheService.find({
+                key: "FormulatorService.findFormulation",
+            });
+
+            if (cachedResult !== null) {
+                return Formulation.mapFormulation(cachedResult);
+            }
+
+            const result: Formulation = yield self.formulationRepository.findById(formulationId);
+
+            yield cacheService.add({
+                key: "FormulatorService.findFormulation",
+            }, result, 24 * 60 * 60);
+
+            return result;
         });
     }
 

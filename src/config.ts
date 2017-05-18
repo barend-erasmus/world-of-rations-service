@@ -9,6 +9,10 @@ export let config = {
         password: 'worldofrations_password',
         database: 'worldofrations',
     },
+    redis: {
+        server: 'redis',
+        port: 6379
+    },
     logging: {
         enabled: true,
         path: './',

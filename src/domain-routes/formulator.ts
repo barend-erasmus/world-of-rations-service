@@ -48,7 +48,7 @@ export class FormulatorRouter {
         const formulationRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulationRepository(config.db);
         const formulatorService = new FormulatorService(formulaRepository, feedstuffRepository, formulationRepository);
 
-        co(function* () {
+        co(function*() {
             const formulation: Formulation = yield formulatorService.createFormulation(req.body.feedstuffs, req.body.formulaId, req.body.currencyCode, req.user == null ? null : req.user.username);
 
             const formulationResult: FormulationResult = yield formulatorService.formulate(formulation, req.user == null ? null : req.user.username);
@@ -67,7 +67,7 @@ export class FormulatorRouter {
         const formulationRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulationRepository(config.db);
         const formulatorService = new FormulatorService(formulaRepository, feedstuffRepository, formulationRepository);
 
-        co(function* () {
+        co(function*() {
             const formulation: Formulation = yield formulatorService.findFormulation(req.query.formulationId, req.user == null ? null : req.user.username);
 
             res.json(new ViewModelFormulation(
@@ -91,7 +91,7 @@ export class FormulatorRouter {
         const formulationRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulationRepository(config.db);
         const formulatorService = new FormulatorService(formulaRepository, feedstuffRepository, formulationRepository);
 
-        co(function* () {
+        co(function*() {
             const formulations: Formulation[] = yield formulatorService.listFormulations();
 
             res.json(formulations.map((x) => new ViewModelFormulation(x.id, x.feasible, x.currencyCode, x.cost, null, new ViewModelFormula(x.id, x.formula.fullname()), null, null)));
