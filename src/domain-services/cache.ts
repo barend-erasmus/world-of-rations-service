@@ -43,7 +43,7 @@ export class CacheService {
         });
 
         return new Promise((resolve, reject) => {
-            redisClient.set(sha1, JSON.stringify(obj), 'EX', ex);
+            redisClient.setex(sha1, ex, JSON.stringify(obj));
             resolve(true);
         });
     }

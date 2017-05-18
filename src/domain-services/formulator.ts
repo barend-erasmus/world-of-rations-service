@@ -89,6 +89,7 @@ export class FormulatorService {
 
             const cachedResult: Formulation = yield cacheService.find({
                 key: "FormulatorService.findFormulation",
+                formulationId,
             });
 
             if (cachedResult !== null) {
@@ -99,6 +100,7 @@ export class FormulatorService {
 
             yield cacheService.add({
                 key: "FormulatorService.findFormulation",
+                formulationId,
             }, result, 24 * 60 * 60);
 
             return result;
