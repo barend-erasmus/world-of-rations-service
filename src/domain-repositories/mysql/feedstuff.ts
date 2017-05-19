@@ -25,9 +25,9 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL listFeedstuffs();`);
+            const result: any[] = yield self.query(`CALL listFeedstuffs();`, true);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, null)));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, null), true));
             return feedstuffs;
         });
     }
@@ -36,9 +36,9 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL listExampleFeedstuffs();`);
+            const result: any[] = yield self.query(`CALL listExampleFeedstuffs();`, true);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new FormulationFeedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, null, x.cost, x.minimum, x.maximum, null)));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new FormulationFeedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, null, x.cost, x.minimum, x.maximum, null), true));
             return feedstuffs;
         });
     }
@@ -48,13 +48,13 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
 
         return co(function*() {
             if (feedstuff.isUserFeedstuff()) {
-                const insertUserFeedstuffResult: any = yield self.query(`CALL insertUserFeedstuff('${feedstuff.username}', '${feedstuff.id}', '${feedstuff.name}', NULL);`);
+                const insertUserFeedstuffResult: any = yield self.query(`CALL insertUserFeedstuff('${feedstuff.username}', '${feedstuff.id}', '${feedstuff.name}', NULL);`, false);
 
-                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL insertUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL insertUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`, false));
             } else {
-                const insertFeedstuffResult: any = yield self.query(`CALL insertFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
+                const insertFeedstuffResult: any = yield self.query(`CALL insertFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`, false);
 
-                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL insertFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL insertFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`, false));
             }
 
             return true;
@@ -68,11 +68,11 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
             if (feedstuff.isUserFeedstuff()) {
                 // const insertUserFeedstuffResult: any = yield self.query(`CALL updateUserFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
 
-                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL updateUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertUserFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL updateUserFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`, false));
             } else {
-                const insertFeedstuffResult: any = yield self.query(`CALL updateFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`);
+                const insertFeedstuffResult: any = yield self.query(`CALL updateFeedstuff('${feedstuff.id}', '${feedstuff.name}', '${feedstuff.group.id}');`, false);
 
-                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL updateFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`));
+                const insertFeedstuffElementResults: any[] = yield feedstuff.elements.map((x) => self.query(`CALL updateFeedstuffElement('${feedstuff.id}', '${x.id}', ${x.value})`, false));
             }
 
             return true;
@@ -83,7 +83,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL findFeedstuffById('${id}');`);
+            const result: any[] = yield self.query(`CALL findFeedstuffById('${id}');`, true);
 
             if (result.length === 0) {
                 return null;
@@ -93,7 +93,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
 
             let feedstuff: Feedstuff = new Feedstuff(result[0].id, result[0].name, group, null, result[0].username);
 
-            feedstuff = yield self.loadElements(feedstuff);
+            feedstuff = yield self.loadElements(feedstuff, false);
 
             return feedstuff;
         });
@@ -103,9 +103,9 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL listFeedstuffsByUsername('${username}');`);
+            const result: any[] = yield self.query(`CALL listFeedstuffsByUsername('${username}');`, false);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, username)));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, username), false));
             return feedstuffs;
         });
     }
@@ -114,7 +114,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         const self = this;
 
         return co(function*() {
-            const findSuggestedValuesByFormulaIdAndFeedstuffIdResult: any[] = yield self.query(`CALL findSuggestedValuesByFormulaIdAndFeedstuffId('${formulaId}','${feedstuffId}');`);
+            const findSuggestedValuesByFormulaIdAndFeedstuffIdResult: any[] = yield self.query(`CALL findSuggestedValuesByFormulaIdAndFeedstuffId('${formulaId}','${feedstuffId}');`, true);
 
             if (findSuggestedValuesByFormulaIdAndFeedstuffIdResult.length === 0) {
                 return null;
@@ -128,7 +128,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         const self = this;
 
         return co(function*() {
-            const listSupplementFeedstuffByElementIdResult: any[] = yield self.query(`CALL listSupplementFeedstuffByElementId('${element.id}', ${element.sortageValue});`);
+            const listSupplementFeedstuffByElementIdResult: any[] = yield self.query(`CALL listSupplementFeedstuffByElementId('${element.id}', ${element.sortageValue});`, true);
 
             const supplementElement = new SupplementElement(element.id, element.name, element.unit, element.sortOrder);
 
@@ -138,11 +138,11 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         });
     }
 
-    private loadElements(feedstuff: Feedstuff) {
+    private loadElements(feedstuff: Feedstuff, useCache: boolean) {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL listFeedstuffElementsById('${feedstuff.id}');`);
+            const result: any[] = yield self.query(`CALL listFeedstuffElementsById('${feedstuff.id}');`, useCache);
 
             feedstuff.elements = result.map((x) => new FeedstuffElement(x.id, x.name, x.unit, x.code, x.sortOrder, x.value));
 

@@ -14,14 +14,12 @@ export class CacheService {
         return CacheService.instance;
     }
 
-    private static instance: CacheService = null;
+private static instance: CacheService = null;
+    private static redisClient: any = null;
 
     public find(key: any): Promise<any> {
         const sha1: string = hash(key);
-        const redisClient: any = redis.createClient({
-            host: config.redis.server,
-            port: config.redis.port,
-        });
+        const redisClient: any = this.getRedisClient();
 
         return new Promise((resolve, reject) => {
             redisClient.get(sha1, (err: Error, reply: any) => {
@@ -37,10 +35,7 @@ export class CacheService {
 
     public add(key: any, obj: any, ex: number): Promise<boolean> {
         const sha1: string = hash(key);
-        const redisClient: any = redis.createClient({
-            host: config.redis.server,
-            port: config.redis.port,
-        });
+        const redisClient: any = this.getRedisClient();
 
         return new Promise((resolve, reject) => {
             redisClient.setex(sha1, ex, JSON.stringify(obj));
@@ -49,6 +44,46 @@ export class CacheService {
     }
 
     public flush(): Promise<boolean> {
-        return Promise.resolve(true);
+
+        const redisClient: any = this.getRedisClient();
+
+        return new Promise((resolve, reject) => {
+
+            redisClient.flushdb((err: Error, succeeded: boolean) => {
+                resolve(true);
+            });
+        });
+
     }
+
+    private getRedisClient() {
+
+        if (CacheService.redisClient !== null) {
+            return CacheService.redisClient;
+        }
+
+        CacheService.redisClient = redis.createClient({
+            host: config.redis.server,
+            port: config.redis.port,
+            retry_strategy: (options: any) => {
+                if (options.error && options.error.code === 'ECONNREFUSED') {
+                    // End reconnecting on a specific error and flush all commands with a individual error
+                    return new Error('The server refused the connection');
+                }
+                if (options.total_retry_time > 1000 * 60 * 60) {
+                    // End reconnecting after a specific timeout and flush all commands with a individual error
+                    return new Error('Retry time exhausted');
+                }
+                if (options.times_connected > 10) {
+                    // End reconnecting with built in error
+                    return undefined;
+                }
+                // reconnect after
+                return Math.min(options.attempt * 100, 3000);
+            },
+        });
+
+        return CacheService.redisClient;
+    }
+
 }

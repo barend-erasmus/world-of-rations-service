@@ -20,9 +20,9 @@ export class FormulaRepository extends Base implements IFormulaRepository {
         const self = this;
 
         return co(function*(){
-            const result: any[] = yield self.query(`CALL listFormulas();`);
+            const result: any[] = yield self.query(`CALL listFormulas();`, true);
 
-            const formulas: Formula[] = yield result.map((x) => self.loadElements(new Formula(x.id, x.name, x.groupId === null ?  null :  new FormulaGroup(x.groupId, x.groupName), null, x.comparisonFormulaId)));
+            const formulas: Formula[] = yield result.map((x) => self.loadElements(new Formula(x.id, x.name, x.groupId === null ?  null :  new FormulaGroup(x.groupId, x.groupName), null, x.comparisonFormulaId), true));
             return formulas;
         });
     }
@@ -32,9 +32,9 @@ export class FormulaRepository extends Base implements IFormulaRepository {
 
         return co(function*() {
 
-            const insertFormulaResult: any = yield self.query(`CALL insertFormula('${formula.id}', '${formula.name}', '${formula.group.id}');`);
+            const insertFormulaResult: any = yield self.query(`CALL insertFormula('${formula.id}', '${formula.name}', '${formula.group.id}');`, false);
 
-            const insertFormulaElementResults: any[] = yield formula.elements.map((x) => self.query(`CALL insertFormulaElement('${formula.id}', '${x.id}', ${x.minimum}, ${x.maximum})`));
+            const insertFormulaElementResults: any[] = yield formula.elements.map((x) => self.query(`CALL insertFormulaElement('${formula.id}', '${x.id}', ${x.minimum}, ${x.maximum})`, false));
 
             return true;
         });
@@ -44,9 +44,9 @@ export class FormulaRepository extends Base implements IFormulaRepository {
         const self = this;
 
         return co(function*() {
-            const insertFormulaResult: any = yield self.query(`CALL updateFeedstuff('${formula.id}', '${formula.name}', '${formula.group.id}');`);
+            const insertFormulaResult: any = yield self.query(`CALL updateFeedstuff('${formula.id}', '${formula.name}', '${formula.group.id}');`, false);
 
-            const insertFormulaElementResults: any[] = yield formula.elements.map((x) => self.query(`CALL updateFeedstuffElement('${formula.id}', '${x.id}', ${x.minimum}, ${x.maximum})`));
+            const insertFormulaElementResults: any[] = yield formula.elements.map((x) => self.query(`CALL updateFeedstuffElement('${formula.id}', '${x.id}', ${x.minimum}, ${x.maximum})`, false));
 
             return true;
         });
@@ -56,7 +56,7 @@ export class FormulaRepository extends Base implements IFormulaRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL findFormulaById('${id}');`);
+            const result: any[] = yield self.query(`CALL findFormulaById('${id}');`, true);
 
             if (result.length === 0) {
                 return null;
@@ -66,17 +66,17 @@ export class FormulaRepository extends Base implements IFormulaRepository {
 
             let formula: Formula = new Formula(result[0].id, result[0].name, group, null, result[0].comparisonFormulaId);
 
-            formula = yield self.loadElements(formula);
+            formula = yield self.loadElements(formula, true);
 
             return formula;
         });
     }
 
-    private loadElements(formula: Formula) {
+    private loadElements(formula: Formula, useCache: boolean) {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL listFormulaElementsById('${formula.id}');`);
+            const result: any[] = yield self.query(`CALL listFormulaElementsById('${formula.id}');`, useCache);
 
             formula.elements = result.map((x) => new FormulaElement(x.id, x.name, x.unit, x.sortOrder, x.minimum, x.maximum));
 

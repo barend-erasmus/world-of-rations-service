@@ -1,5 +1,9 @@
 // Imports
+import * as co from 'co';
 import * as mysql from 'mysql';
+
+// Imports services
+import { CacheService } from './../../domain-services/cache';
 
 // Imports logger
 import { getLogger } from './../../logger';
@@ -20,8 +24,9 @@ export class Base {
         }
     }
 
-    protected query(query: string): Promise<any> {
-           return new Promise((resolve: (x: any) => void, reject: (err: Error) => void) => {
+    protected queryDatabase(query: string): Promise<any> {
+
+        return new Promise((resolve: (x: any) => void, reject: (err: Error) => void) => {
             pool.getConnection((err1: Error, connection: any) => {
                 if (err1) {
                     getLogger('mysql').debug(`${query} failed`);
@@ -43,6 +48,34 @@ export class Base {
                     });
                 }
             });
+        });
+    }
+
+    protected query(query: string, useCache: boolean): Promise<any> {
+
+        const self = this;
+
+        return co(function*(){
+
+            if (useCache === false) {
+                return self.queryDatabase(query);
+            }
+
+            const cacheService: CacheService = CacheService.getInstance();
+
+            const cachedResult: any = yield cacheService.find({
+                query        });
+
+            if (cachedResult !== null) {
+                return cachedResult;
+            }
+
+            const result: any = yield self.queryDatabase(query);
+
+            yield cacheService.add({
+                query        }, result, 24 * 60 * 60);
+
+            return result;
         });
     }
 

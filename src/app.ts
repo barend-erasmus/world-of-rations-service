@@ -7,6 +7,9 @@ import { IRepositoryFactory } from './domain-repositories/repository-factory';
 // Imports factories
 import { RepositoryFactory } from './domain-repositories/mysql/repository-factory';
 
+// Imports services
+import { CacheService } from './domain-services/cache';
+
 // Imports middleware
 import bodyParser = require('body-parser');
 import * as cors from 'cors';
@@ -95,3 +98,7 @@ const port = 8083;
 const api = new WorldOfRationsApi(new RepositoryFactory(), express(), port);
 api.run();
 logger.info(`Listening on ${port}`);
+
+CacheService.getInstance().flush().then(() => {
+    logger.info('Cache cleared');
+});

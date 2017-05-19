@@ -14,7 +14,7 @@ export class UserRepository extends Base implements IUserRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL findUserByUsername('${username}');`);
+            const result: any[] = yield self.query(`CALL findUserByUsername('${username}');`, false);
 
             if (result.length === 0) {
                 return null;
@@ -30,7 +30,7 @@ export class UserRepository extends Base implements IUserRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL updateUser('${user.username}', ${user.lastLoginTimestamp})`);
+            const result: any[] = yield self.query(`CALL updateUser('${user.username}', ${user.lastLoginTimestamp})`, false);
 
             return true;
         });
@@ -40,7 +40,7 @@ export class UserRepository extends Base implements IUserRepository {
         const self = this;
 
         return co(function*() {
-            const result: any[] = yield self.query(`CALL insertUser('${user.username}', ${user.lastLoginTimestamp})`);
+            const result: any[] = yield self.query(`CALL insertUser('${user.username}', ${user.lastLoginTimestamp})`, false);
 
             return true;
         });

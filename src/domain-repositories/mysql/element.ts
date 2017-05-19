@@ -18,7 +18,7 @@ export class ElementRepository extends Base implements IElementRepository {
         const self = this;
 
         return co(function*(){
-            const result: any[] = yield self.query(`CALL listElements();`);
+            const result: any[] = yield self.query(`CALL listElements();`, true);
 
             const elements: Element[] = yield result.map((x) => new Element(x.id, x.name, x.unit, x.code, x.sortOrder));
             return elements;
