@@ -14,7 +14,7 @@ export class CacheService {
         return CacheService.instance;
     }
 
-private static instance: CacheService = null;
+    private static instance: CacheService = null;
     private static redisClient: any = null;
 
     public find(key: any): Promise<any> {
