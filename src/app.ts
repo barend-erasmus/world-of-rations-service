@@ -94,7 +94,7 @@ export class WorldOfRationsApi {
     }
 }
 
-const port = 8083;
+const port = 3000;
 const api = new WorldOfRationsApi(new RepositoryFactory(), express(), port);
 api.run();
 logger.info(`Listening on ${port}`);

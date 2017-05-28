@@ -1,5 +1,5 @@
 export let config = {
-    baseUri: 'http://localhost:8083',
+    baseUri: 'http://localhost:3000',
     web: {
         uri: 'http://localhost:4200',
     },
