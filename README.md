@@ -19,3 +19,7 @@ Start project
 `npm start`
 
 Browse `http://localhost:8083/api`
+
+## Docker Setup
+
+`docker run --name world-of-rations-redis -d redis`
