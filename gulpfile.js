@@ -7,7 +7,7 @@ var GulpSSH = require('gulp-ssh');
 var sequence = require('run-sequence');
 var argv = require('yargs').argv;
 var merge = require('merge-stream');
-var node_ssh = require('node-ssh')
+var node_ssh = require('node-ssh');
 
 // Compiles typescript files
 gulp.task('compile:ts', function () {
