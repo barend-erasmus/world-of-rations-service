@@ -1,0 +1,30 @@
+{
+    "machine": {
+        "host": "$host",
+        "username": "$username",
+        "password": "$password"
+    },
+    "commands": [
+        "sudo apt-get update",
+        "curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -",
+        "sudo apt-get install -y nodejs",
+
+        "npm --prefix /opt/world-of-rations-service install",
+        "docker stop world-of-rations-service",
+        "docker rm world-of-rations-service",
+        "docker build --no-cache -t world-of-rations-service /docker-uploads/world-of-rations-service",
+        "docker run -d -p 8080:3000 --name world-of-rations-service -v /logs:/logs -v /opt/world-of-rations-service:/opt/world-of-rations-service --link world-of-rations-db:mysql --link world-of-rations-redis:redis -t world-of-rations-service"
+    ],
+    "directories": [
+        {
+            "source": "$workspace/dist",
+            "destination": "/opt/world-of-rations-service"
+        }
+    ],
+    "files": [
+        {
+            "source": "$workspace/Dockerfile",
+            "destination": "/docker-uploads/world-of-rations-service/Dockerfile"
+        }
+    ]
+}

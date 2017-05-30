@@ -19,3 +19,7 @@ Start project
 `npm start`
 
 Browse `http://localhost:8083/api`
+
+## Deployment
+
+`ssh-deployer -f deploy.json --host host --username username --password password --workspace workspace` 
