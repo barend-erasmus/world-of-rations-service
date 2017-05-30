@@ -3,7 +3,6 @@ var gulp = require('gulp');
 var clean = require('gulp-clean');
 var ts = require('gulp-typescript');
 var rename = require("gulp-rename");
-var GulpSSH = require('gulp-ssh');
 var sequence = require('run-sequence');
 var argv = require('yargs').argv;
 
