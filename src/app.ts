@@ -90,7 +90,7 @@ export class WorldOfRationsApi {
         app.get('/api/feedstuff"/listExampleFeedstuffs', FeedstuffRouter.listExampleFeedstuffs);
         app.post('/api/feedstuff"/saveUserFeedstuff', FeedstuffRouter.saveUserFeedstuff);
 
-        app.get('/api/formul/listFormula', FormulaRouter.listFormula);
+        app.get('/api/formula/listFormula', FormulaRouter.listFormula);
 
         app.post('/api/formulator/formulate', FormulatorRouter.formulate);
         app.get('/api/formulator/findFormulation', FormulatorRouter.findFormulation);

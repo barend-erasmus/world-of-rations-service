@@ -30,7 +30,7 @@ export class FormulaRouter {
 
         co(function*() {
            const formulas: Formula[] = yield formulaService.listFormula();
-
+           
            res.json(formulas.map((x) => new ViewModelFormula(x.id, x.fullname())));
         }).catch((err: Error) => {
             res.json(err.message);
