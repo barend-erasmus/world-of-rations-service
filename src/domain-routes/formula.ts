@@ -18,12 +18,9 @@ import { FormulaService } from './../domain-services/formula';
 // Imports models
 import { Formula } from './../domain-models/formula';
 
-// Imports view models
-import { Formula as ViewModelFormula } from './../view-models/formula';
-
 export class FormulaRouter {
 
-    public static listFormula(req: Request, res: Response, next: () => void) {
+    public static listFormulas(req: Request, res: Response, next: () => void) {
 
         const formulaRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulaRepository(config.db);
         const formulaService = new FormulaService(formulaRepository);
@@ -31,7 +28,7 @@ export class FormulaRouter {
         co(function*() {
            const formulas: Formula[] = yield formulaService.listFormula();
            
-           res.json(formulas.map((x) => new ViewModelFormula(x.id, x.fullname())));
+           res.json(formulas.map((x) => x.toViewModelFormula()));
         }).catch((err: Error) => {
             res.json(err.message);
         });

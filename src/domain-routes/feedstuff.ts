@@ -22,11 +22,9 @@ import { FormulationFeedstuff } from './../domain-models/formulation-feedstuff';
 import { SuggestedValue } from './../domain-models/suggested-value';
 
 // Imports view models
-import { ExampleFeedstuff as ViewModelExampleFeedstuff } from './../view-models/example-feedstuff';
 import { Feedstuff as ViewModelFeedstuff } from './../view-models/feedstuff';
 import { FeedstuffElement as ViewModelFeedstuffElement } from './../view-models/feedstuff-element';
 import { SuggestedValue as ViewModelSuggestedValue } from './../view-models/suggested-value';
-import { UserFeedstuff as ViewModelUserFeedstuff } from './../view-models/user-feedstuff';
 
 export class FeedstuffRouter {
 
@@ -46,7 +44,7 @@ export class FeedstuffRouter {
                 feedstuffs = feedstuffs.concat(userFeedstuffs);
             }
 
-            res.json(feedstuffs.map((x) => new ViewModelFeedstuff(x.id, x.name)));
+            res.json(feedstuffs.map((x) => x.toViewModelFeedstuff()));
 
         }).catch((err: Error) => {
             res.json(err.message);
@@ -67,7 +65,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuffs: Feedstuff[] = yield feedstuffService.listUserFeedstuffs(req.user == null ? null : req.user.username);
 
-           res.json(feedstuffs.map((x) => new ViewModelUserFeedstuff(x.id, x.name, null)));
+           res.json(feedstuffs.map((x) => x.toViewModelFeedstuff()));
         }).catch((err: Error) => {
             res.json(err.message);
         });
@@ -87,7 +85,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
 
-           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.code, x.sortOrder, x.value))));
+           res.json(feedstuff.toViewModelFeedstuff());
 
         }).catch((err: Error) => {
             res.json(err.message);
@@ -109,7 +107,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
 
-           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, null));
+           res.json(feedstuff.toViewModelFeedstuff());
 
         }).catch((err: Error) => {
             res.json(err.message);
@@ -128,7 +126,7 @@ export class FeedstuffRouter {
            if (suggestedValue == null) {
                 res.json(new ViewModelSuggestedValue(0, 1000));
             } else {
-                res.json(new ViewModelSuggestedValue(suggestedValue.minimum, suggestedValue.maximum));
+                res.json(suggestedValue.toViewModelSuggestedValue());
             }
         }).catch((err: Error) => {
             res.json(err.message);
@@ -144,7 +142,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
 
-           res.json(feedstuffs.map((x) => new ViewModelExampleFeedstuff(x.id, x.name, x.cost, x.minimum, x.maximum)));
+           res.json(feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()));
 
         }).catch((err: Error) => {
             res.json(err.message);
@@ -165,7 +163,7 @@ export class FeedstuffRouter {
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.id, req.body.name, req.body.description, req.body.elements);
 
-           res.json(new ViewModelUserFeedstuff(feedstuff.id, feedstuff.name, feedstuff.elements.map((x) => new ViewModelFeedstuffElement(x.id, x.name, x.unit, x.code, x.sortOrder, x.value))));
+           res.json(feedstuff.toViewModelFeedstuff());
 
         }).catch((err: Error) => {
             res.json(err.message);

@@ -1,6 +1,3 @@
-// Imports view models
-import { FormulaGroup as ViewModelFormulaGroup} from './../view-models/formula-group'
-
 export class FormulaGroup {
 
     public static mapFormulaGroup(obj: any): FormulaGroup {
@@ -13,9 +10,5 @@ export class FormulaGroup {
         public parent: FormulaGroup
     ) {
 
-    }
-
-    public toViewModelFormulaGroup(): ViewModelFormulaGroup {
-        return new ViewModelFormulaGroup(this.id, this.name, this.parent === null? null : this.parent.toViewModelFormulaGroup())
     }
 }

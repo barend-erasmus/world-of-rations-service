@@ -3,6 +3,9 @@ import { Feedstuff } from './feedstuff';
 import { FeedstuffElement } from './feedstuff-element';
 import { FeedstuffGroup } from './feedstuff-group';
 
+// Imports view models
+import { FormulationFeedstuff as ViewModelFormulationFeedstuff } from './../view-models/formulation-feedstuff' 
+
 export class FormulationFeedstuff extends Feedstuff {
 
     public static mapFormulationFeedstuff(obj: FormulationFeedstuff) {
@@ -19,9 +22,12 @@ export class FormulationFeedstuff extends Feedstuff {
         public cost: number,
         public minimum: number,
         public maximum: number,
-        public weight: number
-,
+        public weight: number,
     ) {
         super(id, name, group, elements, username);
+    }
+
+    public toViewModelFormulationFeedstuff(): ViewModelFormulationFeedstuff {
+        return new ViewModelFormulationFeedstuff(this.id, this.name, this.group.toViewModelFeedstuffGroup(), this.elements.map((x) => x.toViewModelFeedstuffElement()), this.username, this.cost, this.minimum, this.maximum, this.weight);
     }
 }

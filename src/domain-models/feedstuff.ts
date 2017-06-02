@@ -2,6 +2,9 @@
 import { FeedstuffElement } from './feedstuff-element';
 import { FeedstuffGroup } from './feedstuff-group';
 
+// Import view models
+import { Feedstuff as ViewModelFeedstuff } from './../view-models/feedstuff';
+
 export class Feedstuff {
 
     public static mapFeedstuff(obj: any) {
@@ -20,6 +23,10 @@ export class Feedstuff {
 
     public isUserFeedstuff() {
         return this.username != null;
+    }
+
+    public toViewModelFeedstuff(): ViewModelFeedstuff {
+        return new ViewModelFeedstuff(this.id, this.name, this.group.toViewModelFeedstuffGroup(), this.elements.map((x) => x.toViewModelFeedstuffElement()), this.username);
     }
 
     public isValid() {

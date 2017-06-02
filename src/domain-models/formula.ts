@@ -2,6 +2,9 @@
 import { FormulaElement } from './formula-element';
 import { FormulaGroup } from './formula-group';
 
+// Imports view models
+import { Formula as ViewModelFormula } from './../view-models/formula';
+
 export class Formula {
 
     public static mapFormula(obj: any) {
@@ -20,5 +23,9 @@ export class Formula {
 
     public fullname() {
         return `${this.group.name} - ${this.name}`;
+    }
+
+    public toViewModelFormula(): ViewModelFormula {
+        return new ViewModelFormula(this.id, this.name, this.group.toViewModelFormulaGroup(), this.elements.map((x) => x.toViewModelFormulaElement()), this.comparisonFormulaId)
     }
 }

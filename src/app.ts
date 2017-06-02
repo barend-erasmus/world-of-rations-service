@@ -82,15 +82,15 @@ export class WorldOfRationsApi {
 
         app.get('/api/database/export', DatabaseRouter.export);
 
-        app.get('/api/feedstuff"/listFeedstuffs', FeedstuffRouter.listFeedstuffs);
-        app.get('/api/feedstuff"/listUserFeedstuffs', FeedstuffRouter.listUserFeedstuffs);
-        app.get('/api/feedstuff"/findUserFeedstuff', FeedstuffRouter.findUserFeedstuff);
-        app.post('/api/feedstuff"/createUserFeedstuff', FeedstuffRouter.createUserFeedstuff);
+        app.get('/api/feedstuff/listFeedstuffs', FeedstuffRouter.listFeedstuffs);
+        app.get('/api/feedstuff/listUserFeedstuffs', FeedstuffRouter.listUserFeedstuffs);
+        app.get('/api/feedstuff/findUserFeedstuff', FeedstuffRouter.findUserFeedstuff);
+        app.post('/api/feedstuff/createUserFeedstuff', FeedstuffRouter.createUserFeedstuff);
         app.get('/api/feedstuff"/findSuggestedValues', FeedstuffRouter.findSuggestedValues);
-        app.get('/api/feedstuff"/listExampleFeedstuffs', FeedstuffRouter.listExampleFeedstuffs);
-        app.post('/api/feedstuff"/saveUserFeedstuff', FeedstuffRouter.saveUserFeedstuff);
+        app.get('/api/feedstuff/listExampleFeedstuffs', FeedstuffRouter.listExampleFeedstuffs);
+        app.post('/api/feedstuff/saveUserFeedstuff', FeedstuffRouter.saveUserFeedstuff);
 
-        app.get('/api/formula/listFormula', FormulaRouter.listFormula);
+        app.get('/api/formula/listFormulas', FormulaRouter.listFormulas);
 
         app.post('/api/formulator/formulate', FormulatorRouter.formulate);
         app.get('/api/formulator/findFormulation', FormulatorRouter.findFormulation);
