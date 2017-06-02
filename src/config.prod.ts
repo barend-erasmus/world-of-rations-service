@@ -11,7 +11,7 @@ export let config = {
     },
     redis: {
         server: 'redis',
-        port: 6379
+        port: 6379,
     },
     logging: {
         enabled: true,
