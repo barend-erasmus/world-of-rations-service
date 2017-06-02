@@ -4,6 +4,7 @@
   "rules": {
     "quotemark": "single",
     "max-line-length": 150,
-    "no-unused-expression": false
+    "no-unused-expression": false,
+    "object-literal-sort-keys": false
   }
 }
