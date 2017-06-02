@@ -23,17 +23,7 @@ import { Formula as ViewModelFormula } from './../view-models/formula';
 
 export class FormulaRouter {
 
-    private router = express.Router();
-
-    constructor() {
-        this.router.get('/listFormula', this.listFormula);
-    }
-
-    public GetRouter() {
-        return this.router;
-    }
-
-    private listFormula(req: Request, res: Response, next: () => void) {
+    public static listFormula(req: Request, res: Response, next: () => void) {
 
         const formulaRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulaRepository(config.db);
         const formulaService = new FormulaService(formulaRepository);

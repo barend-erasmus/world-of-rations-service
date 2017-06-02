@@ -8,17 +8,7 @@ import { config } from './../config';
 
 export class DatabaseRouter {
 
-    private router = express.Router();
-
-    constructor() {
-        this.router.get('/export', this.export);
-    }
-
-    public GetRouter() {
-        return this.router;
-    }
-
-    private export(req: Request, res: Response, next: () => void) {
+    public static export(req: Request, res: Response, next: () => void) {
 
         mysqldump({
             database: config.db.database,

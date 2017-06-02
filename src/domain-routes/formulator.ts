@@ -29,19 +29,7 @@ import { SupplementFeedstuff as ViewModelSupplementFeedstuff } from './../view-m
 
 export class FormulatorRouter {
 
-    private router = express.Router();
-
-    constructor() {
-        this.router.post('/formulate', this.formulate);
-        this.router.get('/findFormulation', this.findFormulation);
-        this.router.get('/listFormulations', this.listFormulations);
-    }
-
-    public GetRouter() {
-        return this.router;
-    }
-
-    private formulate(req: Request, res: Response, next: () => void) {
+    public static formulate(req: Request, res: Response, next: () => void) {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const formulaRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulaRepository(config.db);
@@ -60,7 +48,7 @@ export class FormulatorRouter {
         });
     }
 
-    private findFormulation(req: Request, res: Response, next: () => void) {
+    public static findFormulation(req: Request, res: Response, next: () => void) {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const formulaRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulaRepository(config.db);
@@ -85,7 +73,7 @@ export class FormulatorRouter {
         });
     }
 
-    private listFormulations(req: Request, res: Response, next: () => void) {
+    public static listFormulations(req: Request, res: Response, next: () => void) {
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const formulaRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulaRepository(config.db);
         const formulationRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulationRepository(config.db);

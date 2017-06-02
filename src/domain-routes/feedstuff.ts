@@ -30,23 +30,7 @@ import { UserFeedstuff as ViewModelUserFeedstuff } from './../view-models/user-f
 
 export class FeedstuffRouter {
 
-    private router = express.Router();
-
-    constructor() {
-        this.router.get('/listFeedstuffs', this.listFeedstuffs);
-        this.router.get('/listUserFeedstuffs', this.listUserFeedstuffs);
-        this.router.get('/findUserFeedstuff', this.findUserFeedstuff);
-        this.router.post('/createUserFeedstuff', this.createUserFeedstuff);
-        this.router.get('/findSuggestedValues', this.findSuggestedValues);
-        this.router.get('/listExampleFeedstuffs', this.listExampleFeedstuffs);
-        this.router.post('/saveUserFeedstuff', this.saveUserFeedstuff);
-    }
-
-    public GetRouter() {
-        return this.router;
-    }
-
-    private listFeedstuffs(req: Request, res: Response, next: () => void) {
+    public static listFeedstuffs(req: Request, res: Response, next: () => void) {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
@@ -69,7 +53,7 @@ export class FeedstuffRouter {
         });
     }
 
-    private listUserFeedstuffs(req: Request, res: Response, next: () => void) {
+    public static listUserFeedstuffs(req: Request, res: Response, next: () => void) {
 
         if (req.user == null) {
             res.status(401).end();
@@ -89,7 +73,7 @@ export class FeedstuffRouter {
         });
     }
 
-    private findUserFeedstuff(req: Request, res: Response, next: () => void) {
+    public static findUserFeedstuff(req: Request, res: Response, next: () => void) {
 
         if (req.user == null) {
             res.status(401).end();
@@ -111,7 +95,7 @@ export class FeedstuffRouter {
 
     }
 
-    private createUserFeedstuff(req: Request, res: Response, next: () => void) {
+    public static createUserFeedstuff(req: Request, res: Response, next: () => void) {
 
         if (req.user == null) {
             res.status(401).end();
@@ -132,7 +116,7 @@ export class FeedstuffRouter {
         });
     }
 
-    private findSuggestedValues(req: Request, res: Response, next: () => void) {
+    public static findSuggestedValues(req: Request, res: Response, next: () => void) {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
@@ -151,7 +135,7 @@ export class FeedstuffRouter {
         });
     }
 
-    private listExampleFeedstuffs(req: Request, res: Response, next: () => void) {
+    public static listExampleFeedstuffs(req: Request, res: Response, next: () => void) {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
@@ -167,7 +151,7 @@ export class FeedstuffRouter {
         });
     }
 
-    private saveUserFeedstuff(req: Request, res: Response, next: () => void) {
+    public static saveUserFeedstuff(req: Request, res: Response, next: () => void) {
 
         if (req.user == null) {
             res.status(401).end();

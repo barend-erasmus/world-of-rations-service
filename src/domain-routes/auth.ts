@@ -20,19 +20,7 @@ import { logger } from './../logger';
 
 export class AuthRouter {
 
-    private router = express.Router();
-
-    constructor() {
-        this.router.get('/verify', this.verify);
-        this.router.get('/google', this.google);
-        this.router.get('/google/callback', this.googleCallback);
-    }
-
-    public GetRouter() {
-        return this.router;
-    }
-
-    private verify(req: Request, res: Response, next: () => void) {
+    public static verify(req: Request, res: Response, next: () => void) {
 
         if (req.user == null) {
             res.status(401).end();
@@ -42,7 +30,7 @@ export class AuthRouter {
         res.json(req.user);
     }
 
-    private google(req: Request, res: Response, next: () => void) {
+    public static google(req: Request, res: Response, next: () => void) {
 
         const authService = new AuthService(config.baseUri, config.oauth.jwtSecret, config.oauth.jwtIssuer, config.oauth);
 
@@ -52,7 +40,7 @@ export class AuthRouter {
         res.redirect(uri);
     }
 
-    private googleCallback(req: Request, res: Response, next: () => void) {
+    public static googleCallback(req: Request, res: Response, next: () => void) {
 
         const userRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfUserRepository(config.db);
 

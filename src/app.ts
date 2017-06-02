@@ -75,11 +75,26 @@ export class WorldOfRationsApi {
     }
 
     private configureRoutes(app: express.Express) {
-        app.use("/api/feedstuff", new FeedstuffRouter().GetRouter());
-        app.use("/api/formula", new FormulaRouter().GetRouter());
-        app.use("/api/formulator", new FormulatorRouter().GetRouter());
-        app.use("/api/auth", new AuthRouter().GetRouter());
-        app.use("/api/database", new DatabaseRouter().GetRouter());
+
+        app.get('/api/auth/verify', AuthRouter.verify);
+        app.get('/api/auth/google', AuthRouter.google);
+        app.get('/api/auth/google/callback', AuthRouter.googleCallback);
+
+        app.get('/api/database/export', DatabaseRouter.export);
+
+        app.get('/api/feedstuff"/listFeedstuffs', FeedstuffRouter.listFeedstuffs);
+        app.get('/api/feedstuff"/listUserFeedstuffs', FeedstuffRouter.listUserFeedstuffs);
+        app.get('/api/feedstuff"/findUserFeedstuff', FeedstuffRouter.findUserFeedstuff);
+        app.post('/api/feedstuff"/createUserFeedstuff', FeedstuffRouter.createUserFeedstuff);
+        app.get('/api/feedstuff"/findSuggestedValues', FeedstuffRouter.findSuggestedValues);
+        app.get('/api/feedstuff"/listExampleFeedstuffs', FeedstuffRouter.listExampleFeedstuffs);
+        app.post('/api/feedstuff"/saveUserFeedstuff', FeedstuffRouter.saveUserFeedstuff);
+
+        app.get('/api/formul/listFormula', FormulaRouter.listFormula);
+
+        app.post('/api/formulator/formulate', FormulatorRouter.formulate);
+        app.get('/api/formulator/findFormulation', FormulatorRouter.findFormulation);
+        app.get('/api/formulator/listFormulations', FormulatorRouter.listFormulations);
     }
 
     private configureErrorHandling(app: express.Express) {
