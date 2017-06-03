@@ -13,8 +13,4 @@ export class CompositionElement extends Element {
     ) {
         super(id, name, unit, null, sortOrder);
     }
-
-    public hasSortage() {
-        return this.status === 'Inadequate';
-    }
 }

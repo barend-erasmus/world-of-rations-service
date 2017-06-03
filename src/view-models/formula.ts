@@ -17,8 +17,4 @@ export class Formula {
     ) {
 
     }
-
-    public fullname() {
-        return `${this.group.name} - ${this.name}`;
-    }
 }

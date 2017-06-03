@@ -19,8 +19,7 @@ export class FormulationFeedstuff extends Feedstuff {
         public cost: number,
         public minimum: number,
         public maximum: number,
-        public weight: number
-,
+        public weight: number,
     ) {
         super(id, name, group, elements, username);
     }
