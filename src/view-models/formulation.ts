@@ -16,6 +16,7 @@ export class Formulation {
             Formula.mapFormula(obj.comparisonFormula),
             obj.feedstuffs.map((x) => FormulationFeedstuff.mapFormulationFeedstuff(x)),
             obj.supplementElements.map((x) => SupplementElement.mapSupplementElement(x)),
+            obj.composition,
             obj.username,
             obj.timestamp);
     }
@@ -29,6 +30,7 @@ export class Formulation {
         public comparisonFormula: Formula,
         public feedstuffs: FormulationFeedstuff[],
         public supplementElements: SupplementElement[],
+        public composition: CompositionElement[],
         public username: string,
         public timestamp: number,
     ) {

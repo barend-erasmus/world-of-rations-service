@@ -72,6 +72,6 @@ export class Formulation {
     }
 
     public toViewModelFormulation(): ViewModelFormulation {
-        return new ViewModelFormulation(this.id, this.feasible, this.cost, this.currencyCode, this.formula.toViewModelFormula(), this.comparisonFormula.toViewModelFormula(), this.feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()), this.supplementElements.map((x) => x.toViewModelSupplementElement()), this.username, this.timestamp)
+        return new ViewModelFormulation(this.id, this.feasible, this.cost, this.currencyCode, this.formula.toViewModelFormula(), this.comparisonFormula.toViewModelFormula(), this.feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()), this.supplementElements.map((x) => x.toViewModelSupplementElement()), this.GetComposition(), this.username, this.timestamp)
     }
 }

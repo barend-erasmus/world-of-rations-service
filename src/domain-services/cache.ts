@@ -18,42 +18,46 @@ export class CacheService {
     private static redisClient: any = null;
 
     public find(key: any): Promise<any> {
-        const sha1: string = hash(key);
-        const redisClient: any = this.getRedisClient();
+        return Promise.resolve(null);
+        
+        // const sha1: string = hash(key);
+        // const redisClient: any = this.getRedisClient();
 
-        return new Promise((resolve, reject) => {
-            redisClient.get(sha1, (err: Error, reply: any) => {
-                if (err) {
-                    reject();
-                    return;
-                }
+        // return new Promise((resolve, reject) => {
+        //     redisClient.get(sha1, (err: Error, reply: any) => {
+        //         if (err) {
+        //             reject();
+        //             return;
+        //         }
 
-                resolve(JSON.parse(reply));
-            });
-        });
+        //         resolve(JSON.parse(reply));
+        //     });
+        // });
     }
 
     public add(key: any, obj: any, ex: number): Promise<boolean> {
-        const sha1: string = hash(key);
-        const redisClient: any = this.getRedisClient();
+        return Promise.resolve(true);
 
-        return new Promise((resolve, reject) => {
-            redisClient.setex(sha1, ex, JSON.stringify(obj));
-            resolve(true);
-        });
+        // const sha1: string = hash(key);
+        // const redisClient: any = this.getRedisClient();
+
+        // return new Promise((resolve, reject) => {
+        //     redisClient.setex(sha1, ex, JSON.stringify(obj));
+        //     resolve(true);
+        // });
     }
 
     public flush(): Promise<boolean> {
+        return Promise.resolve(true);
 
-        const redisClient: any = this.getRedisClient();
+        // const redisClient: any = this.getRedisClient();
 
-        return new Promise((resolve, reject) => {
+        // return new Promise((resolve, reject) => {
 
-            redisClient.flushdb((err: Error, succeeded: boolean) => {
-                resolve(true);
-            });
-        });
-
+        //     redisClient.flushdb((err: Error, succeeded: boolean) => {
+        //         resolve(true);
+        //     });
+        // });
     }
 
     private getRedisClient() {
