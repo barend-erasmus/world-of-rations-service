@@ -4,6 +4,9 @@ import { Formula } from './formula';
 import { FormulationFeedstuff } from './formulation-feedstuff';
 import { SupplementElement } from './supplement-element';
 
+// Imports view models
+import { Formulation as ViewModelFormulation } from './../view-models/formulation';
+
 export class Formulation {
 
     public static mapFormulation(obj: any): Formulation {
@@ -66,5 +69,9 @@ export class Formulation {
 
     public GetCompositionElementForSupplementElements() {
         return this.GetComposition().filter((x) => x.hasSortage());
+    }
+
+    public toViewModelFormulation(): ViewModelFormulation {
+        return new ViewModelFormulation(this.id, this.feasible, this.cost, this.currencyCode, this.formula.toViewModelFormula(), this.comparisonFormula.toViewModelFormula(), this.feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()), this.supplementElements.map((x) => x.toViewModelSupplementElement()), this.username, this.timestamp)
     }
 }

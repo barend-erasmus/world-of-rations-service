@@ -1,6 +1,9 @@
 // Imports models
 import { SupplementFeedstuff } from './supplement-feedstuff';
 
+// Imports view models
+import { SupplementElement as ViewModelSupplementElement } from './../view-models/supplement-element';
+
 export class SupplementElement {
 
     public static mapSupplementElement(obj: any): SupplementElement {
@@ -14,5 +17,9 @@ export class SupplementElement {
     public supplementFeedstuffs: SupplementFeedstuff[];
 
     constructor(public id: string, public name: string, public unit: string, public sortOrder: number) {
+    }
+
+    public toViewModelSupplementElement(): ViewModelSupplementElement {
+        return new ViewModelSupplementElement(this.id, this.name, this.unit, this.sortOrder);
     }
 }

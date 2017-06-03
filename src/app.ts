@@ -86,7 +86,7 @@ export class WorldOfRationsApi {
         app.get('/api/feedstuff/listUserFeedstuffs', FeedstuffRouter.listUserFeedstuffs);
         app.get('/api/feedstuff/findUserFeedstuff', FeedstuffRouter.findUserFeedstuff);
         app.post('/api/feedstuff/createUserFeedstuff', FeedstuffRouter.createUserFeedstuff);
-        app.get('/api/feedstuff"/findSuggestedValues', FeedstuffRouter.findSuggestedValues);
+        app.get('/api/feedstuff/findSuggestedValues', FeedstuffRouter.findSuggestedValues);
         app.get('/api/feedstuff/listExampleFeedstuffs', FeedstuffRouter.listExampleFeedstuffs);
         app.post('/api/feedstuff/saveUserFeedstuff', FeedstuffRouter.saveUserFeedstuff);
 
