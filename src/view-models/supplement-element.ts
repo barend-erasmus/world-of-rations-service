@@ -9,6 +9,9 @@ export class SupplementElement {
         return result;
     }
 
+
+    public selectedSupplementFeedstuffId: string;
+    public selectedSupplementFeedstuffWeight: number;
     public supplementFeedstuffs: SupplementFeedstuff[];
 
     constructor(public id: string, public name: string, public unit: string, public sortOrder: number) {

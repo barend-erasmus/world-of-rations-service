@@ -25,6 +25,30 @@ export class Formula {
         return `${this.group.name} - ${this.name}`;
     }
 
+    public getGroupByLevel(level: number): FormulaGroup {
+        const groups: FormulaGroup[] = [];
+
+        let group = this.group;
+        while(group !== null) {
+            groups.push(group);
+            group = group.parent;
+        }
+
+        return groups[groups.length - level - 1];
+    }
+
+    public getNumberOfGroupLevels(): number {
+        const groups: FormulaGroup[] = [];
+
+        let group = this.group;
+        while(group !== null) {
+            groups.push(group);
+            group = group.parent;
+        }
+
+        return groups.length;
+    }
+
     public isValid(): boolean {
 
         if (!this.id) {
