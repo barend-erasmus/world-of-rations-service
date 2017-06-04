@@ -16,6 +16,30 @@ export class FormulaElement extends Element {
         super(id, name, unit, null, sortOrder);
     }
 
+    public isValid() : boolean {
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        } 
+
+        if (!this.unit) {
+            return false;
+        }
+
+        if (!this.code) {
+            return false;
+        }
+
+        if (!this.sortOrder) {
+            return false;
+        }
+
+        return true;
+    }
+
     public toViewModelFormulaElement(): ViewModelFormulaElement {
         return new ViewModelFormulaElement(this.id, this.name, this.unit, this.sortOrder, this.minimum, this.maximum);
     }

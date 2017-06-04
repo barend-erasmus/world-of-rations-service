@@ -24,7 +24,7 @@ export class FeedstuffService {
     public listFeedstuffs(): Promise<Feedstuff[]> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
             const cacheService = CacheService.getInstance();
 
             const cachedResult: Feedstuff[] = yield cacheService.find({
@@ -41,6 +41,10 @@ export class FeedstuffService {
                 key: "FeedstuffService.listFeedstuffs",
             }, result, 24 * 60 * 60);
 
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
+
             return result;
         });
     }
@@ -49,7 +53,7 @@ export class FeedstuffService {
 
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
             const cacheService = CacheService.getInstance();
 
             const cachedResult: FormulationFeedstuff[] = yield cacheService.find({
@@ -66,22 +70,46 @@ export class FeedstuffService {
                 key: "FeedstuffService.listExampleFeedstuffs",
             }, result, 24 * 60 * 60);
 
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
+
             return result;
         });
     }
 
     public findSuggestedValues(formulaId: string, feedstuffId: string): Promise<SuggestedValue> {
-        return this.feedstuffRepository.findSuggestedValuesByFormulaIdAndFeedstuffId(formulaId, feedstuffId);
+        const self = this;
+
+        return co(function* () {
+            const result: SuggestedValue = yield self.feedstuffRepository.findSuggestedValuesByFormulaIdAndFeedstuffId(formulaId, feedstuffId);
+
+            if (!result.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
+            return result;
+        });
     }
 
     public listUserFeedstuffs(username: string): Promise<Feedstuff[]> {
-        return this.feedstuffRepository.listByUsername(username);
+        const self = this;
+
+        return co(function* () {
+            const result: Feedstuff[] = yield self.feedstuffRepository.listByUsername(username);
+
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
+
+            return result;
+        });
     }
 
     public createUserFeedstuff(username: string, name: string, description: string): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
             const id = uuid.v4();
 
             const feedstuff: Feedstuff = new Feedstuff(id, name, null, null, username);
@@ -91,6 +119,10 @@ export class FeedstuffService {
 
             const success: boolean = yield self.feedstuffRepository.create(feedstuff);
 
+            if (!feedstuff.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
             return feedstuff;
         });
     }
@@ -98,7 +130,7 @@ export class FeedstuffService {
     public updateUserFeedstuff(id: string, name: string, description: string, elements: FeedstuffElement[]): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
 
             const feedstuff: Feedstuff = yield self.feedstuffRepository.findById(id);
 
@@ -107,6 +139,10 @@ export class FeedstuffService {
 
             const success: boolean = yield self.feedstuffRepository.update(feedstuff);
 
+            if (!feedstuff.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
             return feedstuff;
         });
     }
@@ -114,12 +150,16 @@ export class FeedstuffService {
     public findUserFeedstuff(feedstuffId: string, username: string): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
 
             const feedstuff: Feedstuff = yield self.feedstuffRepository.findById(feedstuffId);
 
             if (feedstuff.username !== username) {
                 return null;
+            }
+
+            if (!feedstuff.isValid()) {
+                throw new Error('Validation Failed');
             }
 
             return feedstuff;

@@ -38,7 +38,7 @@ export class Formulation {
 
     }
 
-    public GetComposition(): CompositionElement[] {
+    public getComposition(): CompositionElement[] {
         const composition: CompositionElement[] = [];
 
         for (const element of this.comparisonFormula.elements) {
@@ -67,11 +67,60 @@ export class Formulation {
         return composition;
     }
 
-    public GetCompositionElementForSupplementElements() {
-        return this.GetComposition().filter((x) => x.hasSortage());
+    public getCompositionElementForSupplementElements() {
+        return this.getComposition().filter((x) => x.hasSortage());
+    }
+
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.currencyCode) {
+            return false;
+        }
+
+        if (!this.formula) {
+            return false;
+        }
+
+        if (!this.formula.isValid()) {
+            return false;
+        }
+
+        if (!this.comparisonFormula) {
+            return false;
+        }
+
+        if (!this.comparisonFormula.isValid()) {
+            return false;
+        }
+
+        if (!this.feedstuffs) {
+            return false;
+        }
+
+        if (this.feedstuffs.filter((x) => !x.isValid()).length > 0) {
+            return false;
+        }
+
+        if (!this.supplementElements) {
+            return false;
+        }
+
+        if (this.supplementElements.filter((x) => !x.isValid()).length > 0) {
+            return false;
+        }
+
+        if (!this.timestamp) {
+            return false;
+        }
+
+        return true;
     }
 
     public toViewModelFormulation(): ViewModelFormulation {
-        return new ViewModelFormulation(this.id, this.feasible, this.cost, this.currencyCode, this.formula.toViewModelFormula(), this.comparisonFormula.toViewModelFormula(), this.feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()), this.supplementElements.map((x) => x.toViewModelSupplementElement()), this.GetComposition(), this.username, this.timestamp)
+        return new ViewModelFormulation(this.id, this.feasible, this.cost, this.currencyCode, this.formula.toViewModelFormula(), this.comparisonFormula.toViewModelFormula(), this.feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()), this.supplementElements.map((x) => x.toViewModelSupplementElement()), this.getComposition().map((x) => x.toViewModelCompositionElement()), this.username, this.timestamp)
     }
 }

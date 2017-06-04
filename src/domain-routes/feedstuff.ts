@@ -106,7 +106,6 @@ export class FeedstuffRouter {
 
         co(function*() {
            const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
-
            res.json(feedstuff.toViewModelFeedstuff());
 
         }).catch((err: Error) => {
@@ -161,7 +160,8 @@ export class FeedstuffRouter {
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
         co(function*() {
-           const feedstuff: Feedstuff = yield feedstuffService.updateUserFeedstuff(req.body.id, req.body.name, req.body.description, req.body.elements);
+            let feedstuff: Feedstuff = Feedstuff.mapFeedstuff(req.body);
+           feedstuff = yield feedstuffService.updateUserFeedstuff(feedstuff.id, feedstuff.name, null, feedstuff.elements);
 
            res.json(feedstuff.toViewModelFeedstuff());
 

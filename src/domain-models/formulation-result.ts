@@ -6,6 +6,19 @@ export class FormulationResult {
 
     }
 
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }   
+
+        if (!this.currencyCode) {
+            return false
+        }
+
+        return true;
+    }
+
     public toViewModelFormulationResult(): ViewModelFormulationResult {
         return new ViewModelFormulationResult(this.id, this.feasible, this.currencyCode, this.cost);
     }

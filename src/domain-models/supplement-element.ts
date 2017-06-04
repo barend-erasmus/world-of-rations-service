@@ -17,6 +17,27 @@ export class SupplementElement {
     constructor(public id: string, public name: string, public unit: string, public sortOrder: number) {
     }
 
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        }
+
+        if (!this.unit) {
+            return false;
+        }
+
+        if (!this.sortOrder) {
+            return false;
+        }
+
+        return true;
+    }
+
     public toViewModelSupplementElement(): ViewModelSupplementElement {
         const supplementFeedstuffs = this.supplementFeedstuffs.map((x) => x.toViewModelSupplementFeedstuff());
 

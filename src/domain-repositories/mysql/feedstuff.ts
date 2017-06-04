@@ -26,7 +26,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
 
         return co(function*() {
             const result: any[] = yield self.query(`CALL listFeedstuffs();`, true);
-
+            
             const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, null), true));
             return feedstuffs;
         });
@@ -105,7 +105,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         return co(function*() {
             const result: any[] = yield self.query(`CALL listFeedstuffsByUsername('${username}');`, false);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, username), false));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, null, null, username), false));
             return feedstuffs;
         });
     }

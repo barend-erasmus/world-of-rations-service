@@ -16,6 +16,30 @@ export class FeedstuffElement extends Element {
         super(id, name, unit, code, sortOrder);
     }
 
+    public isValid() : boolean {
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        } 
+
+        if (!this.unit) {
+            return false;
+        }
+
+        if (!this.code) {
+            return false;
+        }
+
+        if (!this.sortOrder) {
+            return false;
+        }
+
+        return true;
+    }
+
     public toViewModelFeedstuffElement(): ViewModelFeedstuffElement {
         return new ViewModelFeedstuffElement(this.id, this.name, this.unit, this.code, this.sortOrder, this.value);
     }

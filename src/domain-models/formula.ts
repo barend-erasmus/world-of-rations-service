@@ -25,6 +25,39 @@ export class Formula {
         return `${this.group.name} - ${this.name}`;
     }
 
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        }
+        
+        if (!this.group) {
+            return false;
+        }
+
+        if (!this.group.isValid()) {
+            return false;
+        }
+
+        if (!this.elements) {
+            return false;
+        }
+
+        if (this.elements.filter((x) => !x.isValid()).length > 0) {
+            return false;
+        }
+
+        if (!this.comparisonFormulaId) {
+            return false;
+        }
+
+        return true;
+    }
+
     public toViewModelFormula(): ViewModelFormula {
         return new ViewModelFormula(this.id, this.name, this.group.toViewModelFormulaGroup(), this.elements.map((x) => x.toViewModelFormulaElement()), this.comparisonFormulaId)
     }

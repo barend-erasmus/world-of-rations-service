@@ -27,6 +27,27 @@ export class FormulationFeedstuff extends Feedstuff {
         super(id, name, group, elements, username);
     }
 
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        }
+
+        if (!this.elements) {
+            return false;
+        }
+
+        if (this.elements.filter((x) => !x.isValid()).length > 0) {
+            return false;
+        }
+        
+        return true;
+    }
+
     public toViewModelFormulationFeedstuff(): ViewModelFormulationFeedstuff {
         return new ViewModelFormulationFeedstuff(this.id, this.name, this.group.toViewModelFeedstuffGroup(), this.elements.map((x) => x.toViewModelFeedstuffElement()), this.username, this.cost, this.minimum, this.maximum, this.weight);
     }

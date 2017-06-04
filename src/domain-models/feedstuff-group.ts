@@ -14,6 +14,19 @@ export class FeedstuffGroup {
 
     }
 
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        } 
+
+        return true;
+    }
+
     public toViewModelFeedstuffGroup(): ViewModelFeedstuffGroup {
         return new ViewModelFeedstuffGroup(this.id, this.name);
     }

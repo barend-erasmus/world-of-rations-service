@@ -77,7 +77,7 @@ export class FormulationRepository extends Base implements IFormulationRepositor
         const self = this;
 
         return co(function*() {
-            const supplementElements: any[] = yield formulation.GetCompositionElementForSupplementElements().map((x) => self.feedstuffRepository.findSupplementFeedstuff(x));
+            const supplementElements: any[] = yield formulation.getCompositionElementForSupplementElements().map((x) => self.feedstuffRepository.findSupplementFeedstuff(x));
 
             formulation.supplementElements = supplementElements;
 

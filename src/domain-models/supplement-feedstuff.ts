@@ -10,6 +10,23 @@ export class SupplementFeedstuff {
     constructor(public id: string, public text: string, public weight: number) {
     }
 
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.text) {
+            return false;
+        }
+
+        if (!this.weight) {
+            return false;
+        }
+        
+        return true;
+    }
+
     public toViewModelSupplementFeedstuff(): ViewModelSupplementFeedstuff {
         return new ViewModelSupplementFeedstuff(this.id, this.text, this.weight);
     }
