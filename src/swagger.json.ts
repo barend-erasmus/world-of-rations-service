@@ -158,6 +158,103 @@ export let swaggerDocument = {
           }
         }
       }
+    },
+    "/feedstuff/listFeedstuffs": {
+      "get": {
+        "tags": [
+          "feedstuff"
+        ],
+        "summary": "Retrieve list of feedstuffs",
+        "description": "",
+        "operationId": "feedstufflistfeedstuffs",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Authentication Code",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Feedstuff"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/feedstuff/listUserFeedstuffs": {
+      "get": {
+        "tags": [
+          "feedstuff"
+        ],
+        "summary": "Retrieve list of user feedstuffs",
+        "description": "",
+        "operationId": "feedstufflistuserfeedstuffs",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Feedstuff"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/feedstuff/findUserFeedstuff": {
+      "get": {
+        "tags": [
+          "feedstuff"
+        ],
+        "summary": "Retrieve user feedstuff",
+        "description": "",
+        "operationId": "feedstufffinduserfeedstuff",
+        "parameters": [
+          {
+            "name": "feedstuffId",
+            "in": "query",
+            "description": "Feedstuff Id",
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Feedstuff"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -272,6 +369,65 @@ export let swaggerDocument = {
           "items": {
             "$ref": "#/definitions/TreeNode"
           }
+        }
+      }
+    },
+    "Feedstuff": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "group": {
+          "$ref": "#/definitions/FeedstuffGroup"
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FeedstuffElement"
+          }
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "FeedstuffGroup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "FeedstuffElement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     }
