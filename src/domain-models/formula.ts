@@ -82,7 +82,7 @@ export class Formula {
         return true;
     }
 
-    public toViewModelFormula(): ViewModelFormula {
-        return new ViewModelFormula(this.id, this.name, this.group.toViewModelFormulaGroup(), this.elements.map((x) => x.toViewModelFormulaElement()), this.comparisonFormulaId)
+    public toViewModelFormula(excludeElements: boolean = false): ViewModelFormula {
+        return new ViewModelFormula(this.id, this.name, this.group.toViewModelFormulaGroup(), excludeElements? null : this.elements.map((x) => x.toViewModelFormulaElement()), this.comparisonFormulaId)
     }
 }

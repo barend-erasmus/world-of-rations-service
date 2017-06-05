@@ -1,5 +1,8 @@
 // Imports
 import express = require("express");
+const swaggerUi = require('swagger-ui-express');
+import { swaggerDocument } from './swagger.json';
+
 
 // Imports interfaces
 import { IRepositoryFactory } from './domain-repositories/repository-factory';
@@ -14,7 +17,6 @@ import { CacheService } from './domain-services/cache';
 import bodyParser = require('body-parser');
 import * as cors from 'cors';
 import jwt = require('express-jwt');
-import expressWinston = require('express-winston');
 
 // Imports routes
 import { AuthRouter } from './domain-routes/auth';
@@ -65,41 +67,73 @@ export class WorldOfRationsApi {
             issuer: config.oauth.jwtIssuer,
             secret: config.oauth.jwtSecret,
         }));
-
-        // Configure express-winston
-        app.use(expressWinston.logger({
-            meta: false,
-            msg: 'HTTP Request: {{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}',
-            winstonInstance: logger,
-        }));
     }
 
     private configureRoutes(app: express.Express) {
 
-        app.get('/api/auth/verify', AuthRouter.verify);
-        app.get('/api/auth/google', AuthRouter.google);
-        app.get('/api/auth/google/callback', AuthRouter.googleCallback);
+        app.get('/api/auth/verify', this.logger, this.requiresAuthentication, AuthRouter.verify);
+        app.get('/api/auth/google', this.logger, AuthRouter.google);
+        app.get('/api/auth/google/callback', this.logger, AuthRouter.googleCallback);
 
-        app.get('/api/database/export', DatabaseRouter.export);
+        app.get('/api/database/export', this.logger, DatabaseRouter.export);
+        app.get('/api/database/logs', DatabaseRouter.logs);
 
-        app.get('/api/feedstuff/listFeedstuffs', FeedstuffRouter.listFeedstuffs);
-        app.get('/api/feedstuff/listUserFeedstuffs', FeedstuffRouter.listUserFeedstuffs);
-        app.get('/api/feedstuff/findUserFeedstuff', FeedstuffRouter.findUserFeedstuff);
-        app.post('/api/feedstuff/createUserFeedstuff', FeedstuffRouter.createUserFeedstuff);
-        app.get('/api/feedstuff/findSuggestedValues', FeedstuffRouter.findSuggestedValues);
-        app.get('/api/feedstuff/listExampleFeedstuffs', FeedstuffRouter.listExampleFeedstuffs);
-        app.post('/api/feedstuff/saveUserFeedstuff', FeedstuffRouter.saveUserFeedstuff);
+        app.get('/api/feedstuff/listFeedstuffs', this.logger, FeedstuffRouter.listFeedstuffs);
+        app.get('/api/feedstuff/listUserFeedstuffs', this.logger, this.requiresAuthentication, FeedstuffRouter.listUserFeedstuffs);
+        app.get('/api/feedstuff/findUserFeedstuff', this.logger, this.requiresAuthentication, FeedstuffRouter.findUserFeedstuff);
+        app.post('/api/feedstuff/createUserFeedstuff', this.logger, this.requiresAuthentication, FeedstuffRouter.createUserFeedstuff);
+        app.get('/api/feedstuff/findSuggestedValues', this.logger, FeedstuffRouter.findSuggestedValues);
+        app.get('/api/feedstuff/listExampleFeedstuffs', this.logger, FeedstuffRouter.listExampleFeedstuffs);
+        app.post('/api/feedstuff/saveUserFeedstuff', this.logger, this.requiresAuthentication, FeedstuffRouter.saveUserFeedstuff);
 
-        app.get('/api/formula/listFormulas', FormulaRouter.listFormulas);
+        app.get('/api/formula/listFormulas', this.logger, FormulaRouter.listFormulas);
+        app.get('/api/formula/listFormulaTreeNodes', this.logger, FormulaRouter.listFormulaTreeNodes);
 
-        app.post('/api/formulator/formulate', FormulatorRouter.formulate);
-        app.get('/api/formulator/findFormulation', FormulatorRouter.findFormulation);
-        app.get('/api/formulator/listFormulations', FormulatorRouter.listFormulations);
+        app.post('/api/formulator/formulate', this.logger, FormulatorRouter.formulate);
+        app.get('/api/formulator/findFormulation', this.logger, FormulatorRouter.findFormulation);
+        app.get('/api/formulator/listFormulations', this.logger, FormulatorRouter.listFormulations);
+
+        app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    }
+
+    private requiresAuthentication(req: express.Request, res: express.Response, next: () => void) {
+        if (req.user == null) {
+            res.status(401).end();
+        } else {
+            next();
+        }
+    }
+
+    private logger(req: express.Request, res: express.Response, next: () => void) {
+        var start = Date.now();
+        res.on('finish', function () {
+            const duration = Date.now() - start;
+
+            logger.info(`${req.method} - ${req.url} - [${duration} ms]`, {
+                type: 'expressjs',
+                hostname: req.hostname,
+                headers: req.headers,
+                url: req.url,
+                method: req.method,
+                status: res.statusCode,
+                responseTime: duration
+            });
+        });
+
+        next();
     }
 
     private configureErrorHandling(app: express.Express) {
         app.use((err: Error, req: express.Request, res: express.Response, next: () => void) => {
-            logger.error(err.message);
+            logger.error(err.message, {
+                type: 'expressjs',
+                hostname: req.hostname,
+                headers: req.headers,
+                url: req.url,
+                method: req.method,
+                status: res.statusCode,
+            });
+
             if (err.name === 'UnauthorizedError') {
                 res.status(401).end();
             } else {
@@ -112,8 +146,12 @@ export class WorldOfRationsApi {
 const port = 3000;
 const api = new WorldOfRationsApi(new RepositoryFactory(), express(), port);
 api.run();
-logger.info(`Listening on ${port}`);
+logger.debug(`listening on ${port}`, {
+    type: 'app',
+});
 
 CacheService.getInstance().flush().then(() => {
-    logger.info('Cache cleared');
+    logger.debug('cache cleared', {
+        type: 'app',
+    });
 });

@@ -17,6 +17,7 @@ import { FormulaService } from './../domain-services/formula';
 
 // Imports models
 import { Formula } from './../domain-models/formula';
+import { TreeNode } from './../domain-models/tree-node';
 
 export class FormulaRouter {
 
@@ -28,9 +29,24 @@ export class FormulaRouter {
         co(function*() {
            const formulas: Formula[] = yield formulaService.listFormula();
            
-           res.json(formulas.map((x) => x.toViewModelFormula()));
+           res.json(formulas.map((x) => x.toViewModelFormula(true)));
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
+        });
+    }
+
+    public static listFormulaTreeNodes(req: Request, res: Response, next: () => void) {
+
+        const formulaRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFormulaRepository(config.db);
+        const formulaService = new FormulaService(formulaRepository);
+
+        co(function*() {
+           const formulas: Formula[] = yield formulaService.listFormula();
+           const treeNodes: TreeNode[] = formulaService.convertFormulasToTree(formulas);
+
+           res.json(treeNodes.map((x) => x.toViewModelTreeNode()));
+        }).catch((err: Error) => {
+            res.status(400).json(err.message);
         });
     }
 

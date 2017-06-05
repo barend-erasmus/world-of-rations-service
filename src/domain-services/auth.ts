@@ -6,7 +6,7 @@ import * as utf8 from 'utf8';
 import * as uuid from 'uuid';
 
 // Imports logger
-import { getLogger } from './../logger';
+import { logger } from './../logger';
 
 export class AuthService {
 
@@ -30,8 +30,6 @@ export class AuthService {
             issuer: this.jwtIssuer,
             jwtid: uuid.v4(),
         });
-
-        getLogger('AuthService_encodeToken').debug(token);
 
         return token;
     }

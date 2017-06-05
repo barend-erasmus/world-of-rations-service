@@ -9,6 +9,7 @@ import { IFormulaRepository } from './../domain-repositories/formula';
 
 // Imports models
 import { Formula } from './../domain-models/formula';
+import { TreeNode } from './../domain-models/tree-node';
 
 export class FormulaService {
 
@@ -16,8 +17,8 @@ export class FormulaService {
     }
 
 
-    public convertFormulasToTree(formulas: Formula[]): any[] {
-        const nodes: any[] = [];
+    public convertFormulasToTree(formulas: Formula[]): TreeNode[] {
+        const nodes: TreeNode[] = [];
 
         for (const formula of formulas) {
             let ns = nodes;
@@ -26,21 +27,14 @@ export class FormulaService {
                 let n = ns.find((x) => x.id === formulaGroup.id);
 
                 if (!n) {
-                    ns.push({
-                        id: formulaGroup.id,
-                        name: formulaGroup.name,
-                        children: []
-                    });
+                    ns.push(new TreeNode(formulaGroup.id, formulaGroup.name, []));
                     n = ns.find((x) => x.id === formulaGroup.id);
                 }
 
                 ns = n.children;
             }
 
-            ns.push({
-                id: formula.id,
-                name: formula.name
-            });
+            ns.push(new TreeNode(formula.id, formula.name, undefined));
         }
 
         return nodes;
@@ -68,6 +62,10 @@ export class FormulaService {
                 key: "FormulaService.listFormula"
                 ,
             }, result, 24 * 60 * 60);
+
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
 
             return result;
         });

@@ -6,7 +6,7 @@ import * as mysql from 'mysql';
 import { CacheService } from './../../domain-services/cache';
 
 // Imports logger
-import { getLogger } from './../../logger';
+import { logger } from './../../logger';
 
 let pool = null;
 
@@ -29,19 +29,33 @@ export class Base {
         return new Promise((resolve: (x: any) => void, reject: (err: Error) => void) => {
             pool.getConnection((err1: Error, connection: any) => {
                 if (err1) {
-                    getLogger('mysql').debug(`${query} failed`);
+                    logger.error(`'${query}' failed`, {
+                        type: 'repository',
+                        query: query
+                    });
                     reject(err1);
                 } else {
                     connection.query(query, (err2: Error, results: any[], fields) => {
                         connection.release();
                         if (err2) {
-                            getLogger('mysql').debug(`${query} failed`);
+                            logger.error(`'${query}' failed`, {
+                                type: 'repository',
+                                query: query
+                            });
                             reject(err2);
                         } else {
                             if (results[0] === undefined) {
-                                getLogger('mysql').debug(`${query}`);
+                                logger.info(`${query}`, {
+                                    type: 'repository',
+                                    query: query,
+                                    numberOfResults: 0
+                                });
                             } else {
-                                getLogger('mysql').debug(`${query} => ${results[0].length}`);
+                                logger.info(`${query} => ${results[0].length}`, {
+                                    type: 'repository',
+                                    query: query,
+                                    numberOfResults: results[0].length
+                                });
                             }
                             resolve(results[0]);
                         }
@@ -55,7 +69,7 @@ export class Base {
 
         const self = this;
 
-        return co(function*(){
+        return co(function* () {
 
             if (useCache === false) {
                 return self.queryDatabase(query);
@@ -64,7 +78,8 @@ export class Base {
             const cacheService: CacheService = CacheService.getInstance();
 
             const cachedResult: any = yield cacheService.find({
-                query        });
+                query
+            });
 
             if (cachedResult !== null) {
                 return cachedResult;
@@ -73,7 +88,8 @@ export class Base {
             const result: any = yield self.queryDatabase(query);
 
             yield cacheService.add({
-                query        }, result, 24 * 60 * 60);
+                query
+            }, result, 24 * 60 * 60);
 
             return result;
         });

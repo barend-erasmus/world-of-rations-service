@@ -15,14 +15,24 @@ export class UserService {
     public login(username: string): Promise<boolean> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
             let user: User = yield self.userRepository.findByUsername(username);
 
             if (user == null) {
                 user = new User(username, new Date().getTime());
+
+                if (!user.isValid()) {
+                    throw new Error('Validation Failed');
+                }
+
                 return self.userRepository.create(user);
             } else {
                 user.lastLoginTimestamp = new Date().getTime();
+
+                if (!user.isValid()) {
+                    throw new Error('Validation Failed');
+                }
+                
                 return self.userRepository.update(user);
             }
         });

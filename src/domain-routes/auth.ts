@@ -21,12 +21,6 @@ import { logger } from './../logger';
 export class AuthRouter {
 
     public static verify(req: Request, res: Response, next: () => void) {
-
-        if (req.user == null) {
-            res.status(401).end();
-            return;
-        }
-
         res.json(req.user);
     }
 
@@ -59,12 +53,12 @@ export class AuthRouter {
                         res.redirect(config.web.uri + '/login?token=' + token);
                     });
                 } else {
-                    return res.status(500).send('An Error Occurred');
+                    res.status(400).send('An error occurred while requesting user data from Google');
                 }
             });
 
         }).catch((err: Error) => {
-            return res.status(500).send(err.message);
+            return res.status(400).send(err.message);
         });
     }
 }

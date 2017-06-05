@@ -29,10 +29,6 @@ export class FormulaElement extends Element {
             return false;
         }
 
-        if (!this.code) {
-            return false;
-        }
-
         if (!this.sortOrder) {
             return false;
         }

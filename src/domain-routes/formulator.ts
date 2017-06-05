@@ -44,7 +44,7 @@ export class FormulatorRouter {
             res.json(formulationResult.toViewModelFormulationResult());
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
@@ -61,7 +61,7 @@ export class FormulatorRouter {
             res.json(formulation.toViewModelFormulation());
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
@@ -77,7 +77,7 @@ export class FormulatorRouter {
             res.json(formulations.map((x) => x.toViewModelFormulation()));
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 }

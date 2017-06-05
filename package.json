@@ -16,7 +16,6 @@
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
-    "express-winston": "^2.3.0",
     "javascript-lp-solver": "^0.4.3",
     "jsonwebtoken": "^7.3.0",
     "mysql": "^2.13.0",
@@ -24,9 +23,11 @@
     "object-hash": "^1.1.8",
     "redis": "^2.7.1",
     "request": "^2.81.0",
+    "swagger-ui-express": "^2.0.0",
     "utf8": "^2.1.2",
     "uuid": "^3.0.1",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "yargs": "^8.0.1"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
@@ -37,17 +38,10 @@
     "@types/supertest": "^2.0.0",
     "@types/winston": "^2.2.0",
     "chai": "^3.5.0",
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-rename": "^1.2.2",
-    "gulp-ssh": "^0.6.0",
-    "gulp-typescript": "^3.1.4",
     "mocha": "^3.2.0",
-    "run-sequence": "^1.2.2",
     "sinon": "^2.1.0",
     "supertest": "^3.0.0",
     "tslint": "^5.0.0",
-    "typescript": "^2.1.5",
-    "yargs": "^8.0.1"
+    "typescript": "^2.1.5"
   }
 }

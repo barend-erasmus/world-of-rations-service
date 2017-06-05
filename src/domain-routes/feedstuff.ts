@@ -34,7 +34,7 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function*() {
+        co(function* () {
             let feedstuffs: Feedstuff[] = yield feedstuffService.listFeedstuffs();
 
             if (req.user !== undefined) {
@@ -47,69 +47,54 @@ export class FeedstuffRouter {
             res.json(feedstuffs.map((x) => x.toViewModelFeedstuff()));
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
     public static listUserFeedstuffs(req: Request, res: Response, next: () => void) {
 
-        if (req.user == null) {
-            res.status(401).end();
-            return;
-        }
-
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function*() {
-           const feedstuffs: Feedstuff[] = yield feedstuffService.listUserFeedstuffs(req.user == null ? null : req.user.username);
+        co(function* () {
+            const feedstuffs: Feedstuff[] = yield feedstuffService.listUserFeedstuffs(req.user == null ? null : req.user.username);
 
-           res.json(feedstuffs.map((x) => x.toViewModelFeedstuff()));
+            res.json(feedstuffs.map((x) => x.toViewModelFeedstuff()));
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
     public static findUserFeedstuff(req: Request, res: Response, next: () => void) {
 
-        if (req.user == null) {
-            res.status(401).end();
-            return;
-        }
-
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function*() {
-           const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
+        co(function* () {
+            const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
 
-           res.json(feedstuff.toViewModelFeedstuff());
+            res.json(feedstuff.toViewModelFeedstuff());
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
 
     }
 
     public static createUserFeedstuff(req: Request, res: Response, next: () => void) {
 
-        if (req.user == null) {
-            res.status(401).end();
-            return;
-        }
-
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function*() {
-           const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
-           res.json(feedstuff.toViewModelFeedstuff());
+        co(function* () {
+            const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
+            res.json(feedstuff.toViewModelFeedstuff());
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
@@ -119,16 +104,16 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function*() {
-           const suggestedValue: SuggestedValue = yield feedstuffService.findSuggestedValues(req.query.formulaId, req.query.feedstuffId);
+        co(function* () {
+            const suggestedValue: SuggestedValue = yield feedstuffService.findSuggestedValues(req.query.formulaId, req.query.feedstuffId);
 
-           if (suggestedValue == null) {
+            if (suggestedValue == null) {
                 res.json(new ViewModelSuggestedValue(0, 1000));
             } else {
                 res.json(suggestedValue.toViewModelSuggestedValue());
             }
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
@@ -138,35 +123,30 @@ export class FeedstuffRouter {
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function*() {
-           const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
+        co(function* () {
+            const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
 
-           res.json(feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()));
+            res.json(feedstuffs.map((x) => x.toViewModelFormulationFeedstuff()));
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
     public static saveUserFeedstuff(req: Request, res: Response, next: () => void) {
 
-        if (req.user == null) {
-            res.status(401).end();
-            return;
-        }
-
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
         const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
 
-        co(function*() {
+        co(function* () {
             let feedstuff: Feedstuff = Feedstuff.mapFeedstuff(req.body);
-           feedstuff = yield feedstuffService.updateUserFeedstuff(feedstuff.id, feedstuff.name, null, feedstuff.elements);
+            feedstuff = yield feedstuffService.updateUserFeedstuff(feedstuff.id, feedstuff.name, null, feedstuff.elements);
 
-           res.json(feedstuff.toViewModelFeedstuff());
+            res.json(feedstuff.toViewModelFeedstuff());
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 }
