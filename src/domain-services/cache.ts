@@ -2,10 +2,13 @@
 import * as hash from 'object-hash';
 import * as redis from 'redis';
 
+// Imports interfaces
+import { ICacheService } from './interfaces/cache';
+
 // Imports configuration
 import { config } from './../config';
 
-export class CacheService {
+export class CacheService implements ICacheService {
 
     public static getInstance(): CacheService {
         if (CacheService.instance === null) {

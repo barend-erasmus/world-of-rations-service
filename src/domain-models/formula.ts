@@ -75,14 +75,10 @@ export class Formula {
             return false;
         }
 
-        if (!this.comparisonFormulaId) {
-            return false;
-        }
-
         return true;
     }
 
     public toViewModelFormula(excludeElements: boolean = false): ViewModelFormula {
-        return new ViewModelFormula(this.id, this.name, this.group.toViewModelFormulaGroup(), excludeElements? null : this.elements.map((x) => x.toViewModelFormulaElement()), this.comparisonFormulaId)
+        return new ViewModelFormula(this.id, this.name, this.group.toViewModelFormulaGroup(), excludeElements? [] : this.elements.map((x) => x.toViewModelFormulaElement()), this.comparisonFormulaId)
     }
 }

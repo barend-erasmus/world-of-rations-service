@@ -16,6 +16,7 @@
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
+    "handlebars": "^4.0.10",
     "javascript-lp-solver": "^0.4.3",
     "jsonwebtoken": "^7.3.0",
     "mysql": "^2.13.0",

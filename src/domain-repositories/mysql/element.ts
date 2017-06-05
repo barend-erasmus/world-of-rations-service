@@ -5,7 +5,7 @@ import { Base } from './base';
 // Imports models
 import { Element } from './../../domain-models/element';
 
-// Imports repositories
+// Imports interfaces
 import { IElementRepository } from './../element';
 
 export class ElementRepository extends Base implements IElementRepository {

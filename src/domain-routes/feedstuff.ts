@@ -14,6 +14,7 @@ import { IRepositoryFactory } from './../domain-repositories/repository-factory'
 
 // Imports services
 import { FeedstuffService } from './../domain-services/feedstuff';
+import { CacheService } from './../domain-services/cache';
 
 // Imports models
 import { Feedstuff } from './../domain-models/feedstuff';
@@ -32,7 +33,7 @@ export class FeedstuffRouter {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
-        const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
+        const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, elementRepository);
 
         co(function* () {
             let feedstuffs: Feedstuff[] = yield feedstuffService.listFeedstuffs();
@@ -55,7 +56,7 @@ export class FeedstuffRouter {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
-        const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
+        const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, elementRepository);
 
         co(function* () {
             const feedstuffs: Feedstuff[] = yield feedstuffService.listUserFeedstuffs(req.user == null ? null : req.user.username);
@@ -70,7 +71,7 @@ export class FeedstuffRouter {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
-        const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
+        const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, elementRepository);
 
         co(function* () {
             const feedstuff: Feedstuff = yield feedstuffService.findUserFeedstuff(req.query.feedstuffId, req.user.username);
@@ -87,7 +88,7 @@ export class FeedstuffRouter {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
-        const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
+        const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, elementRepository);
 
         co(function* () {
             const feedstuff: Feedstuff = yield feedstuffService.createUserFeedstuff(req.user.username, req.body.name, req.body.description);
@@ -102,7 +103,7 @@ export class FeedstuffRouter {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
-        const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
+        const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, elementRepository);
 
         co(function* () {
             const suggestedValue: SuggestedValue = yield feedstuffService.findSuggestedValues(req.query.formulaId, req.query.feedstuffId);
@@ -121,7 +122,7 @@ export class FeedstuffRouter {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
-        const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
+        const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, elementRepository);
 
         co(function* () {
             const feedstuffs: FormulationFeedstuff[] = yield feedstuffService.listExampleFeedstuffs();
@@ -137,7 +138,7 @@ export class FeedstuffRouter {
 
         const feedstuffRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfFeedstuffRepository(config.db);
         const elementRepository = WorldOfRationsApi.repositoryFactory.getInstanceOfElementRepository(config.db);
-        const feedstuffService = new FeedstuffService(feedstuffRepository, elementRepository);
+        const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, elementRepository);
 
         co(function* () {
             let feedstuff: Feedstuff = Feedstuff.mapFeedstuff(req.body);

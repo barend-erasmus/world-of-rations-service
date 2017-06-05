@@ -8,6 +8,7 @@ import { CacheService } from './cache';
 // Imports interfaces
 import { IElementRepository } from './../domain-repositories/element';
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
+import { ICacheService } from './interfaces/cache';
 
 // Imports models
 import { Element } from './../domain-models/element';
@@ -18,16 +19,15 @@ import { SuggestedValue } from './../domain-models/suggested-value';
 
 export class FeedstuffService {
 
-    constructor(private feedstuffRepository: IFeedstuffRepository, private elementRepository: IElementRepository) {
+    constructor(private cacheService: ICacheService, private feedstuffRepository: IFeedstuffRepository, private elementRepository: IElementRepository) {
     }
 
     public listFeedstuffs(): Promise<Feedstuff[]> {
         const self = this;
 
         return co(function* () {
-            const cacheService = CacheService.getInstance();
 
-            const cachedResult: Feedstuff[] = yield cacheService.find({
+            const cachedResult: Feedstuff[] = yield self.cacheService.find({
                 key: "FeedstuffService.listFeedstuffs",
             });
 
@@ -37,7 +37,7 @@ export class FeedstuffService {
 
             const result: Feedstuff[] = yield self.feedstuffRepository.list();
 
-            yield cacheService.add({
+            yield self.cacheService.add({
                 key: "FeedstuffService.listFeedstuffs",
             }, result, 24 * 60 * 60);
 
@@ -54,9 +54,8 @@ export class FeedstuffService {
         const self = this;
 
         return co(function* () {
-            const cacheService = CacheService.getInstance();
 
-            const cachedResult: FormulationFeedstuff[] = yield cacheService.find({
+            const cachedResult: FormulationFeedstuff[] = yield self.cacheService.find({
                 key: "FeedstuffService.listExampleFeedstuffs",
             });
 
@@ -66,7 +65,7 @@ export class FeedstuffService {
 
             const result: FormulationFeedstuff[] = yield self.feedstuffRepository.examples();
 
-            yield cacheService.add({
+            yield self.cacheService.add({
                 key: "FeedstuffService.listExampleFeedstuffs",
             }, result, 24 * 60 * 60);
 
@@ -84,6 +83,10 @@ export class FeedstuffService {
         return co(function* () {
             const result: SuggestedValue = yield self.feedstuffRepository.findSuggestedValuesByFormulaIdAndFeedstuffId(formulaId, feedstuffId);
 
+            if (result === null) {
+                return null;
+            }
+            
             if (!result.isValid()) {
                 throw new Error('Validation Failed');
             }

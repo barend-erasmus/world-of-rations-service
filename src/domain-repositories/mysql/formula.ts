@@ -7,7 +7,7 @@ import { Formula } from './../../domain-models/formula';
 import { FormulaElement } from './../../domain-models/formula-element';
 import { FormulaGroup } from './../../domain-models/formula-group';
 
-// Imports repositories
+// Imports interfaces
 import { IFormulaRepository } from './../formula';
 
 export class FormulaRepository extends Base implements IFormulaRepository {

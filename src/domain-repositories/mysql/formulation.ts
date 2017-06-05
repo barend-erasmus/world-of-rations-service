@@ -2,7 +2,7 @@
 import * as co from 'co';
 import { Base } from './base';
 
-// Imports repositories
+// Imports interfaces
 import { IFeedstuffRepository } from './../feedstuff';
 import { IFormulaRepository } from './../formula';
 import { IFormulationRepository } from './../formulation';
