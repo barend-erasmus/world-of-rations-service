@@ -14,7 +14,7 @@ export let config = {
         port: 6379,
     },
     logging: {
-        enabled: false,
+        enabled: true,
         path: './',
     },
     oauth: {
