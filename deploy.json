@@ -23,6 +23,10 @@
     ],
     "files": [
         {
+            "source": "$workspace/package.json",
+            "destination": "/opt/world-of-rations-service/package.json"
+        },
+        {
             "source": "$workspace/Dockerfile",
             "destination": "/docker-uploads/world-of-rations-service/Dockerfile"
         }
