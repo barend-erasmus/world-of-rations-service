@@ -2,10 +2,13 @@
 import * as hash from 'object-hash';
 import * as redis from 'redis';
 
+// Imports interfaces
+import { ICacheService } from './interfaces/cache';
+
 // Imports configuration
 import { config } from './../config';
 
-export class CacheService {
+export class CacheService implements ICacheService {
 
     public static getInstance(): CacheService {
         if (CacheService.instance === null) {
@@ -17,7 +20,7 @@ export class CacheService {
     private static instance: CacheService = null;
     private static redisClient: any = null;
 
-    public find(key: any): Promise<any> {
+    public find(key: any): Promise<any> {      
         const sha1: string = hash(key);
         const redisClient: any = this.getRedisClient();
 
@@ -44,7 +47,6 @@ export class CacheService {
     }
 
     public flush(): Promise<boolean> {
-
         const redisClient: any = this.getRedisClient();
 
         return new Promise((resolve, reject) => {
@@ -53,7 +55,6 @@ export class CacheService {
                 resolve(true);
             });
         });
-
     }
 
     private getRedisClient() {

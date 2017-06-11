@@ -2,6 +2,9 @@
 import { FeedstuffElement } from './feedstuff-element';
 import { FeedstuffGroup } from './feedstuff-group';
 
+// Import view models
+import { Feedstuff as ViewModelFeedstuff } from './../view-models/feedstuff';
+
 export class Feedstuff {
 
     public static mapFeedstuff(obj: any) {
@@ -23,22 +26,44 @@ export class Feedstuff {
     }
 
     public isValid() {
-        if (this.id === null || this.name == null || this.elements === null) {
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        }
+
+        if (!this.elements) {
+            return false;
+        }
+
+        if (this.elements.filter((x) => !x.isValid()).length > 0) {
             return false;
         }
 
         if (this.isUserFeedstuff()) {
-            if (this.username === null) {
+            if (!this.username) {
                 return false;
             }
 
-            if (this.group !== null) {
+            if (this.group) {
                 return false;
             }
         } else {
-            if (this.group === null) {
+            if (!this.group) {
+                return false;
+            }
+
+            if (!this.group.isValid()) {
                 return false;
             }
         }
+
+        return true;
+    }
+
+    public toViewModelFeedstuff(): ViewModelFeedstuff {
+        return new ViewModelFeedstuff(this.id, this.name, this.group == null? null : this.group.toViewModelFeedstuffGroup(), this.elements.map((x) => x.toViewModelFeedstuffElement()), this.username);
     }
 }

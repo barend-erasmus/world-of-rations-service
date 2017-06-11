@@ -21,24 +21,5 @@ const logger = new (winston.Logger)({
   transports: transportsArr,
 });
 
-export function getLogger(name: string) {
-
-  let transportsNameArr = [];
-
-  if (config.logging.enabled) {
-    transportsNameArr = [
-      new (winston.transports.Console)({ level: 'debug' }),
-      new (winston.transports.File)({
-        filename: path.join(config.logging.path, `world-of-rations-api-${name}.log`),
-        level: 'debug',
-      }),
-    ];
-  }
-
-  return new (winston.Logger)({
-    transports: transportsNameArr,
-  });
-}
-
 // Exports
 export { logger };

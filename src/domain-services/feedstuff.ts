@@ -8,6 +8,7 @@ import { CacheService } from './cache';
 // Imports interfaces
 import { IElementRepository } from './../domain-repositories/element';
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
+import { ICacheService } from './interfaces/cache';
 
 // Imports models
 import { Element } from './../domain-models/element';
@@ -18,16 +19,15 @@ import { SuggestedValue } from './../domain-models/suggested-value';
 
 export class FeedstuffService {
 
-    constructor(private feedstuffRepository: IFeedstuffRepository, private elementRepository: IElementRepository) {
+    constructor(private cacheService: ICacheService, private feedstuffRepository: IFeedstuffRepository, private elementRepository: IElementRepository) {
     }
 
     public listFeedstuffs(): Promise<Feedstuff[]> {
         const self = this;
 
-        return co(function*() {
-            const cacheService = CacheService.getInstance();
+        return co(function* () {
 
-            const cachedResult: Feedstuff[] = yield cacheService.find({
+            const cachedResult: Feedstuff[] = yield self.cacheService.find({
                 key: "FeedstuffService.listFeedstuffs",
             });
 
@@ -37,9 +37,13 @@ export class FeedstuffService {
 
             const result: Feedstuff[] = yield self.feedstuffRepository.list();
 
-            yield cacheService.add({
+            yield self.cacheService.add({
                 key: "FeedstuffService.listFeedstuffs",
             }, result, 24 * 60 * 60);
+
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
 
             return result;
         });
@@ -49,10 +53,9 @@ export class FeedstuffService {
 
         const self = this;
 
-        return co(function*() {
-            const cacheService = CacheService.getInstance();
+        return co(function* () {
 
-            const cachedResult: FormulationFeedstuff[] = yield cacheService.find({
+            const cachedResult: FormulationFeedstuff[] = yield self.cacheService.find({
                 key: "FeedstuffService.listExampleFeedstuffs",
             });
 
@@ -62,26 +65,54 @@ export class FeedstuffService {
 
             const result: FormulationFeedstuff[] = yield self.feedstuffRepository.examples();
 
-            yield cacheService.add({
+            yield self.cacheService.add({
                 key: "FeedstuffService.listExampleFeedstuffs",
             }, result, 24 * 60 * 60);
+
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
 
             return result;
         });
     }
 
     public findSuggestedValues(formulaId: string, feedstuffId: string): Promise<SuggestedValue> {
-        return this.feedstuffRepository.findSuggestedValuesByFormulaIdAndFeedstuffId(formulaId, feedstuffId);
+        const self = this;
+
+        return co(function* () {
+            const result: SuggestedValue = yield self.feedstuffRepository.findSuggestedValuesByFormulaIdAndFeedstuffId(formulaId, feedstuffId);
+
+            if (result === null) {
+                return null;
+            }
+            
+            if (!result.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
+            return result;
+        });
     }
 
     public listUserFeedstuffs(username: string): Promise<Feedstuff[]> {
-        return this.feedstuffRepository.listByUsername(username);
+        const self = this;
+
+        return co(function* () {
+            const result: Feedstuff[] = yield self.feedstuffRepository.listByUsername(username);
+
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
+
+            return result;
+        });
     }
 
     public createUserFeedstuff(username: string, name: string, description: string): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
             const id = uuid.v4();
 
             const feedstuff: Feedstuff = new Feedstuff(id, name, null, null, username);
@@ -91,6 +122,10 @@ export class FeedstuffService {
 
             const success: boolean = yield self.feedstuffRepository.create(feedstuff);
 
+            if (!feedstuff.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
             return feedstuff;
         });
     }
@@ -98,7 +133,7 @@ export class FeedstuffService {
     public updateUserFeedstuff(id: string, name: string, description: string, elements: FeedstuffElement[]): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
 
             const feedstuff: Feedstuff = yield self.feedstuffRepository.findById(id);
 
@@ -107,6 +142,10 @@ export class FeedstuffService {
 
             const success: boolean = yield self.feedstuffRepository.update(feedstuff);
 
+            if (!feedstuff.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
             return feedstuff;
         });
     }
@@ -114,12 +153,16 @@ export class FeedstuffService {
     public findUserFeedstuff(feedstuffId: string, username: string): Promise<Feedstuff> {
         const self = this;
 
-        return co(function*() {
+        return co(function* () {
 
             const feedstuff: Feedstuff = yield self.feedstuffRepository.findById(feedstuffId);
 
             if (feedstuff.username !== username) {
                 return null;
+            }
+
+            if (!feedstuff.isValid()) {
+                throw new Error('Validation Failed');
             }
 
             return feedstuff;

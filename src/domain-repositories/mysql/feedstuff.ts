@@ -2,7 +2,7 @@
 import * as co from 'co';
 import { Base } from './base';
 
-// Imports repositories
+// Imports interfaces
 import { IFeedstuffRepository } from './../feedstuff';
 
 // Imports models
@@ -26,7 +26,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
 
         return co(function*() {
             const result: any[] = yield self.query(`CALL listFeedstuffs();`, true);
-
+            
             const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, null), true));
             return feedstuffs;
         });
@@ -105,7 +105,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
         return co(function*() {
             const result: any[] = yield self.query(`CALL listFeedstuffsByUsername('${username}');`, false);
 
-            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, x.groupId === null ? null : new FeedstuffGroup(x.groupId, x.groupName), null, username), false));
+            const feedstuffs: Feedstuff[] = yield result.map((x) => self.loadElements(new Feedstuff(x.id, x.name, null, null, username), false));
             return feedstuffs;
         });
     }
@@ -133,7 +133,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
             const supplementElement = new SupplementElement(element.id, element.name, element.unit, element.sortOrder);
 
             supplementElement.supplementFeedstuffs = listSupplementFeedstuffByElementIdResult.map((x) => new SupplementFeedstuff(x.id, x.name, x.weight));
-            supplementElement.selectedSupplementFeedstuff = supplementElement.supplementFeedstuffs.length === 0 ? null : supplementElement.supplementFeedstuffs[0];
+
             return supplementElement;
         });
     }

@@ -41,10 +41,10 @@ export class FormulatorRouter {
 
             const formulationResult: FormulationResult = yield formulatorService.formulate(formulation, req.user == null ? null : req.user.username);
 
-            res.json(new ViewModelFormulationResult(formulationResult.id, formulationResult.feasible, formulationResult.currencyCode, formulationResult.cost));
+            res.json(formulationResult.toViewModelFormulationResult());
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
@@ -58,18 +58,10 @@ export class FormulatorRouter {
         co(function*() {
             const formulation: Formulation = yield formulatorService.findFormulation(req.query.formulationId, req.user == null ? null : req.user.username);
 
-            res.json(new ViewModelFormulation(
-                formulation.id, formulation.feasible, formulation.currencyCode, formulation.cost,
-                formulation.feedstuffs.map((x) => new ViewModelFormulationFeedstuff(x.id, x.name, x.cost, x.weight, x.minimum, x.maximum)),
-                new ViewModelFormula(formulation.formula.id, formulation.formula.fullname()),
-                formulation.GetComposition().map((x) => new ViewModelCompositionElement(x.id, x.name, x.unit, x.status, x.value, x.sortOrder)),
-                formulation.supplementElements.map((x) => new ViewModelSupplementElement(x.id, x.name, x.unit, x.sortOrder,
-                    x.selectedSupplementFeedstuff === null ? null : new ViewModelSupplementFeedstuff(x.selectedSupplementFeedstuff.id, x.selectedSupplementFeedstuff.text, x.selectedSupplementFeedstuff.weight),
-                    x.supplementFeedstuffs.map((y) => new ViewModelSupplementFeedstuff(y.id, y.text, y.weight)))),
-            ));
+            res.json(formulation.toViewModelFormulation());
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 
@@ -82,10 +74,10 @@ export class FormulatorRouter {
         co(function*() {
             const formulations: Formulation[] = yield formulatorService.listFormulations();
 
-            res.json(formulations.map((x) => new ViewModelFormulation(x.id, x.feasible, x.currencyCode, x.cost, null, new ViewModelFormula(x.id, x.formula.fullname()), null, null)));
+            res.json(formulations.map((x) => x.toViewModelFormulation()));
 
         }).catch((err: Error) => {
-            res.json(err.message);
+            res.status(400).json(err.message);
         });
     }
 }

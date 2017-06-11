@@ -44,7 +44,7 @@ export class FormulatorService {
                 formulationFeedstuffs.push(new FormulationFeedstuff(feedstuff.id, feedstuff.name, feedstuff.group, feedstuff.elements, feedstuff.username, f.cost, f.minimum, f.maximum, f.weight));
             }
 
-            const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, comparisonFormula, formulationFeedstuffs, null, username, 0);
+            const formulation = new Formulation(uuid.v4(), false, 0, currencyCode, formula, comparisonFormula, formulationFeedstuffs, null, username, new Date().getTime() / 1000);
 
             return formulation;
         });
@@ -75,7 +75,13 @@ export class FormulatorService {
 
             const success: boolean = yield self.formulationRepository.create(formulation);
 
-            return new FormulationResult(formulation.id, formulation.feasible, formulation.currencyCode, formulation.cost);
+            const result: FormulationResult = new FormulationResult(formulation.id, formulation.feasible, formulation.currencyCode, formulation.cost);
+
+            if (!result.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
+            return result;
         });
     }
 
@@ -103,12 +109,26 @@ export class FormulatorService {
                 key: "FormulatorService.findFormulation",
             }, result, 24 * 60 * 60);
 
+            if (!result.isValid()) {
+                throw new Error('Validation Failed');
+            }
+
             return result;
         });
     }
 
     public listFormulations(): Promise<Formulation[]> {
-        return this.formulationRepository.list();
+        const self = this;
+
+        return co(function* () {
+            const result: Formulation[] = yield self.formulationRepository.list();
+
+            if (result.filter((x) => !x.isValid()).length > 0) {
+                throw new Error('Validation Failed');
+            }
+
+            return result;
+        });
     }
 
     private buildConstraintsForSolver(feedstuffs: FormulationFeedstuff[], formula: Formula) {

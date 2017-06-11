@@ -2,6 +2,9 @@
 import { FormulaElement } from './formula-element';
 import { FormulaGroup } from './formula-group';
 
+// Imports view models
+import { Formula as ViewModelFormula } from './../view-models/formula';
+
 export class Formula {
 
     public static mapFormula(obj: any) {
@@ -20,5 +23,62 @@ export class Formula {
 
     public fullname() {
         return `${this.group.name} - ${this.name}`;
+    }
+
+    public getGroupByLevel(level: number): FormulaGroup {
+        const groups: FormulaGroup[] = [];
+
+        let group = this.group;
+        while(group !== null) {
+            groups.push(group);
+            group = group.parent;
+        }
+
+        return groups[groups.length - level - 1];
+    }
+
+    public getNumberOfGroupLevels(): number {
+        const groups: FormulaGroup[] = [];
+
+        let group = this.group;
+        while(group !== null) {
+            groups.push(group);
+            group = group.parent;
+        }
+
+        return groups.length;
+    }
+
+    public isValid(): boolean {
+
+        if (!this.id) {
+            return false;
+        }
+
+        if (!this.name) {
+            return false;
+        }
+        
+        if (!this.group) {
+            return false;
+        }
+
+        if (!this.group.isValid()) {
+            return false;
+        }
+
+        if (!this.elements) {
+            return false;
+        }
+
+        if (this.elements.filter((x) => !x.isValid()).length > 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public toViewModelFormula(excludeElements: boolean = false): ViewModelFormula {
+        return new ViewModelFormula(this.id, this.name, this.group.toViewModelFormulaGroup(), excludeElements? [] : this.elements.map((x) => x.toViewModelFormulaElement()), this.comparisonFormulaId)
     }
 }
