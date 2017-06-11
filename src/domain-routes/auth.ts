@@ -3,7 +3,15 @@ import * as co from 'co';
 import { Express, Request, Response } from "express";
 import * as express from 'express';
 import * as request from 'request';
-import { config } from './../config';
+
+// Import configurations
+let config = require('./../config').config;
+
+const argv = require('yargs').argv;
+
+if (argv.prod) {
+  config = require('./../config.prod').config;
+}
 
 // Imports app
 import { WorldOfRationsApi } from './../app';

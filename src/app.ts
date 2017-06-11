@@ -28,8 +28,14 @@ import { FormulatorRouter } from './domain-routes/formulator';
 // Imports logger
 import { logger } from './logger';
 
-// Imports configurations
-import { config } from './config';
+// Import configurations
+let config = require('./config').config;
+
+const argv = require('yargs').argv;
+
+if (argv.prod) {
+  config = require('./config.prod').config;
+}
 
 export class WorldOfRationsApi {
 

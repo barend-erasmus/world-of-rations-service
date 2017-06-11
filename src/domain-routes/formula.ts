@@ -6,8 +6,14 @@ import * as express from 'express';
 // Imports app
 import { WorldOfRationsApi } from './../app';
 
-// Imports configuration
-import { config } from './../config';
+// Import configurations
+let config = require('./../config').config;
+
+const argv = require('yargs').argv;
+
+if (argv.prod) {
+  config = require('./../config.prod').config;
+}
 
 // Imports interfaces
 import { IRepositoryFactory } from './../domain-repositories/repository-factory';

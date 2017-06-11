@@ -5,9 +5,14 @@ import * as redis from 'redis';
 // Imports interfaces
 import { ICacheService } from './interfaces/cache';
 
-// Imports configuration
-import { config } from './../config';
+// Import configurations
+let config = require('./../config').config;
 
+const argv = require('yargs').argv;
+
+if (argv.prod) {
+  config = require('./../config.prod').config;
+}
 export class CacheService implements ICacheService {
 
     public static getInstance(): CacheService {

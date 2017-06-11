@@ -7,8 +7,14 @@ import * as Handlebars from 'handlebars';
 // Imports logger
 import { logger } from './../logger';
 
-// Imports configuration
-import { config } from './../config';
+// Import configurations
+let config = require('./../config').config;
+
+const argv = require('yargs').argv;
+
+if (argv.prod) {
+  config = require('./../config.prod').config;
+}
 
 export class DatabaseRouter {
 
