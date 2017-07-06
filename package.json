@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "tsc & node ./dist/app.js",
-    "test": "tsc & mocha --timeout=5000 ./dist/**/*.test.js"
+    "test": "tsc & mocha --timeout=5000 ./dist/**/*.test.js",
+    "cover": "tsc & istanbul cover node_modules/mocha/bin/_mocha --root ./dist ./dist/**/*.test.js"
   },
   "author": "Barend Erasmus",
   "license": "MIT",

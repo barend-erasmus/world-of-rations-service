@@ -18,7 +18,7 @@ export class FeedstuffRepository implements IFeedstuffRepository {
     }
 
     public examples(): Promise<FormulationFeedstuff[]> {
-        return null;
+        return Promise.resolve([]);
     }
 
     public create(feedstuff: Feedstuff): Promise<boolean> {

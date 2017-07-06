@@ -52,4 +52,41 @@ describe('FeedstuffService', function () {
             });
         });
     });
+
+    describe('listExampleFeedstuffs', () => {
+        it('should call feedstuffRepository.examples', () => {
+            return co(function* () {
+
+                const feedstuffRepository = new FeedstuffRepository();
+                const feedstuffRepositoryExamplesSpy = sinon.spy(feedstuffRepository, 'examples');
+                const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, null);
+
+                yield feedstuffService.listExampleFeedstuffs();
+
+                expect(feedstuffRepositoryExamplesSpy.calledOnce).to.be.true;
+            });
+        });
+
+        it('should throw exception when repository returns invalid feedstuffs', () => {
+            return co(function* () {
+
+                const feedstuffRepository = new FeedstuffRepository();
+                sinon.stub(feedstuffRepository, 'examples').callsFake(() => {
+                    return Promise.resolve([
+                        new Feedstuff(null, null, null, null, null)
+                    ]);
+                });
+                
+                const feedstuffService = new FeedstuffService(CacheService.getInstance(), feedstuffRepository, null);
+
+                try {
+                    yield feedstuffService.listExampleFeedstuffs();
+                    throw new Error('Expected Error');
+                } catch (err) {
+                    expect(err).to.be.not.null;
+                    expect(err.message).to.be.eq('Validation Failed');
+                }
+            });
+        });
+    });
 });

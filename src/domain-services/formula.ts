@@ -1,11 +1,9 @@
 // Imports
 import * as co from 'co';
 
-// Imports services
-import { CacheService } from './cache';
-
 // Imports interfaces
 import { IFormulaRepository } from './../domain-repositories/formula';
+import { ICacheService } from './interfaces/cache';
 
 // Imports models
 import { Formula } from './../domain-models/formula';
@@ -13,7 +11,7 @@ import { TreeNode } from './../domain-models/tree-node';
 
 export class FormulaService {
 
-    constructor(private formulaRepository: IFormulaRepository) {
+    constructor(private cacheService: ICacheService, private formulaRepository: IFormulaRepository) {
     }
 
 
@@ -40,16 +38,14 @@ export class FormulaService {
         return nodes;
     }
 
-    public listFormula(): Promise<Formula[]> {
+    public listFormulas(): Promise<Formula[]> {
 
         const self = this;
 
         return co(function* () {
-            const cacheService = CacheService.getInstance();
 
-            const cachedResult: Formula[] = yield cacheService.find({
-                key: "FormulaService.listFormula"
-                ,
+            const cachedResult: Formula[] = yield self.cacheService.find({
+                key: "FormulaService.listFormula",
             });
 
             if (cachedResult !== null) {
@@ -58,7 +54,7 @@ export class FormulaService {
 
             const result: Formula[] = yield self.formulaRepository.list();
 
-            yield cacheService.add({
+            yield self.cacheService.add({
                 key: "FormulaService.listFormula"
                 ,
             }, result, 24 * 60 * 60);

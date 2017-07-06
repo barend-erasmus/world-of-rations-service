@@ -2,9 +2,6 @@
 import * as co from 'co';
 import * as uuid from 'uuid';
 
-// Imports services
-import { CacheService } from './cache';
-
 // Imports interfaces
 import { IElementRepository } from './../domain-repositories/element';
 import { IFeedstuffRepository } from './../domain-repositories/feedstuff';
