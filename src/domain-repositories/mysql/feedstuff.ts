@@ -132,7 +132,7 @@ export class FeedstuffRepository extends Base implements IFeedstuffRepository {
 
             const supplementElement = new SupplementElement(element.id, element.name, element.unit, element.sortOrder);
 
-            supplementElement.supplementFeedstuffs = listSupplementFeedstuffByElementIdResult.map((x) => new SupplementFeedstuff(x.id, x.name, x.weight));
+            supplementElement.supplementFeedstuffs = listSupplementFeedstuffByElementIdResult.map((x) => new SupplementFeedstuff(x.id, x.name, x.weight * 1000));
 
             return supplementElement;
         });
